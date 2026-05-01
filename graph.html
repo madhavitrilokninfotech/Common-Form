@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Common Input Form</title>
+
+    <!-- FONT Family -->
+    <link rel="stylesheet" type="text/css" href="assets/font/font-family/stylesheet.css">
+    <link rel="stylesheet" type="text/css" href="assets/font/font-awesome/css/font-awesome.min.css">
+
+    <!-- CSS Links -->
+    <link rel="stylesheet" type="text/css" href="assets/css/select2.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/flatpickr.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/media.css">
+
+</head>
+
+<body>
+    <!-- Form -->
+    <div class="form-container">
+        <div class="form-wrapper">
+            <div class="form-header">
+                <h1 class="form-title mb-0">Common Input Form</h1>
+            </div>
+            <div class="form-body">
+                <!-- Donut chart -->
+                <div class="chart-container">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="chart-wrap">
+                                <div class="tooltip" id="tooltip">
+                                    <div class="tooltip-title"></div>
+                                    <div class="tooltip-body"></div>
+                                </div>
+                                <canvas id="donutChart" width="250" height="250"></canvas>
+                                <div class="total-text-center" id="totalText"></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="chart-list-wrap">
+                                <div class="labels" id="labels"></div>
+                                <ul class="breakdown" id="breakdown"></ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JS Script Links -->
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/select2.min.js"></script>
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/flatpickr.js"></script>
+    <script src="assets/js/custom.js" defer></script>
+
+    <!-- Donut chart JS -->
+    <script>
+        const data = [
+            { label: "Pending", value: 40, color: "#f39c12", visible: true },
+            { label: "Completed", value: 80, color: "#2ecc71", visible: true },
+            { label: "Cancelled", value: 20, color: "#e74c3c", visible: true },
+            { label: "Returned", value: 10, color: "#3498db", visible: true }
+        ];
+
+        const canvas = document.getElementById("donutChart");
+        const ctx = canvas.getContext("2d");
+        const tooltip = document.getElementById("tooltip");
+
+        const tooltipTitle = tooltip.querySelector(".tooltip-title");
+        const tooltipBody = tooltip.querySelector(".tooltip-body");
+
+        let animationProgress = 0;
+
+        /* ==== HELPERS ==== */
+        function getTotalVisible() {
+            return data.filter(d => d.visible).reduce((sum, d) => sum + d.value, 0);
+        }
+
+        function updateCenterText() {
+            const total = getTotalVisible();
+            document.getElementById("totalText").innerHTML =
+                `<span>Total Orders</span><br><span>${total}</span>`;
+        }
+
+        /* ==== DRAW CHART ==== */
+        function drawChart(progress = 1) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            let startAngle = -Math.PI / 2;
+
+            const visibleData = data.filter(d => d.visible);
+            const totalVisible = getTotalVisible();
+
+            visibleData.forEach(d => {
+                const sliceAngle = (d.value / totalVisible) * Math.PI * 2 * progress;
+
+                // Draw arc
+                ctx.beginPath();
+                ctx.arc(125, 125, 100, startAngle, startAngle + sliceAngle);
+                ctx.arc(125, 125, 60, startAngle + sliceAngle, startAngle, true);
+                ctx.closePath();
+
+                ctx.fillStyle = d.color;
+                ctx.fill();
+
+                // ✅ FIXED ANGLES (important for tooltip)
+                d.start = startAngle + Math.PI / 2;
+                d.end = startAngle + sliceAngle + Math.PI / 2;
+
+                // ✅ % LABEL
+                const midAngle = (startAngle + startAngle + sliceAngle) / 2;
+                const labelRadius = 80;
+
+                const textX = 125 + Math.cos(midAngle) * labelRadius;
+                const textY = 125 + Math.sin(midAngle) * labelRadius;
+
+                const percent = ((d.value / totalVisible) * 100).toFixed(1) + "%";
+
+                ctx.fillStyle = "#fff";
+                ctx.font = "bold 12px Arial";
+                ctx.textAlign = "center";
+                ctx.textBaseline = "middle";
+                ctx.fillText(percent, textX, textY);
+
+                startAngle += sliceAngle;
+            });
+        }
+
+        /* ==== ANIMATION ==== */
+        function animate() {
+            animationProgress += 0.03;
+            if (animationProgress > 1) animationProgress = 1;
+
+            drawChart(animationProgress);
+
+            if (animationProgress < 1) requestAnimationFrame(animate);
+        }
+
+        updateCenterText();
+        animate();
+
+        /* ==== TOOLTIP ==== */
+        canvas.addEventListener("mousemove", function (e) {
+            const rect = canvas.getBoundingClientRect();
+
+            const mouseX = e.clientX - rect.left;
+            const mouseY = e.clientY - rect.top;
+
+            // center-based coords
+            const x = mouseX - 125;
+            const y = mouseY - 125;
+
+            // distance from center
+            const distance = Math.sqrt(x * x + y * y);
+
+            // ✅ Only inside donut ring
+            if (distance < 60 || distance > 100) {
+                tooltip.style.opacity = 0;
+                return;
+            }
+
+            // angle calc
+            let angle = Math.atan2(y, x);
+
+            // shift so 0 starts from top
+            angle = angle + Math.PI / 2;
+
+            // normalize (0 → 2PI)
+            if (angle < 0) angle += Math.PI * 2;
+
+            let found = false;
+            const totalVisible = getTotalVisible();
+
+            data.forEach(d => {
+                if (!d.visible) return;
+
+                // ✅ exact slice detection (handles edge case)
+                let isInsideSlice = false;
+
+                if (d.start < d.end) {
+                    isInsideSlice = angle >= d.start && angle <= d.end;
+                } else {
+                    isInsideSlice = angle >= d.start || angle <= d.end;
+                }
+
+                if (isInsideSlice) {
+
+                    const percent = ((d.value / totalVisible) * 100).toFixed(1);
+
+                    tooltipTitle.innerText = d.label;
+                    tooltipBody.innerHTML = `
+                        Orders: <b>${d.value}</b><br>
+                        Percentage: <b>${percent}%</b>
+                    `;
+
+                    // ✅ Keep tooltip inside canvas
+                    let left = mouseX + 10;
+                    let top = mouseY + 10;
+
+                    const tooltipWidth = tooltip.offsetWidth || 140;
+                    const tooltipHeight = tooltip.offsetHeight || 60;
+
+                    if (left + tooltipWidth > canvas.width) {
+                        left = mouseX - tooltipWidth - 10;
+                    }
+
+                    if (top + tooltipHeight > canvas.height) {
+                        top = mouseY - tooltipHeight - 10;
+                    }
+
+                    tooltip.style.left = left + "px";
+                    tooltip.style.top = top + "px";
+                    tooltip.style.opacity = 1;
+
+                    found = true;
+                }
+            });
+
+            if (!found) {
+                tooltip.style.opacity = 0;
+            }
+        });
+
+        canvas.addEventListener("mouseleave", () => {
+            tooltip.style.opacity = 0;
+        });
+
+        /* ==== LABELS ==== */
+        const labelsContainer = document.getElementById("labels");
+
+        data.forEach(d => {
+            const el = document.createElement("div");
+            el.className = "label-item";
+            el.style.background = d.color;
+            el.innerText = d.label;
+
+            labelsContainer.appendChild(el);
+        });
+
+        /* ==== BREAKDOWN STATUS LIST ==== */
+        function renderBreakdown() {
+            const list = document.getElementById("breakdown");
+            list.innerHTML = "";
+
+            data.forEach(d => {  // use full data (NOT visibleData)
+                const li = document.createElement("li");
+
+                // add classname after li
+                li.classList.add("status-item");
+                li.innerHTML = `
+                    <div class="status-left">
+                        <span class="status-dot" style="background:${d.color}"></span>
+                        <span class="status-text">${d.label}</span>
+                    </div>
+                    <div class="status-count">${d.value} orders</div>
+                `;
+
+                list.appendChild(li);
+            });
+        }
+        renderBreakdown();
+    </script>
+</body>
+
+</html>
