@@ -156,6 +156,7 @@
     .value-selected-range .marktext {
         font-size: 13px;
         padding: 4px 8px;
+        max-width: 50px;
     }
 
     .vals-row p {
