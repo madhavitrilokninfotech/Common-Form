@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Common Input Form</title>
+
+    <!-- FONT Family -->
+    <link rel="stylesheet" type="text/css" href="assets/font/font-family/stylesheet.css">
+    <link rel="stylesheet" type="text/css" href="assets/font/font-awesome/css/font-awesome.min.css">
+
+    <!-- CSS Links -->
+    <link rel="stylesheet" type="text/css" href="assets/css/select2.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/flatpickr.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/media.css">
+
+</head>
+
+<body>
+    <!-- Form -->
+    <div class="form-container">
+        <div class="form-wrapper">
+            <div class="form-header">
+                <h1 class="form-title mb-0">Common Input Form</h1>
+            </div>
+            <div class="form-body">
+                <form action="" id="RegistrationForm" class="form">
+                    <!-- Full Name & Email Field -->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="field-group">
+                                <label class="form-label">Full Name</label>
+                                <input type="text" class="form-control border" placeholder="Enter Your Name"
+                                    autocomplete="name" id="FullName">
+                                <small class="error-msg" id="nameError"></small>
+                            </div>
+
+                        </div>
+                        <div class="col-md-6">
+                            <div class="field-group">
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-control border" placeholder="Enter Your Email"
+                                    autocomplete="email" id="Email">
+                                <small class="error-msg" id="emailError"></small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Password Fields > Custom -->
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="field-group">
+                                <label class="form-label">Password</label>
+                                <div class="password-wrapper">
+                                    <input type="password" id="password" class="form-control border"
+                                        placeholder="Enter password">
+                                    <span class="toggle-password" data-target="password">
+                                        <i class="fa fa-eye"></i>
+                                    </span>
+                                </div>
+                                <small class="error-msg" id="passwordError"></small>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <!-- Confirm Password Field -->
+                            <div class="field-group">
+                                <label class="form-label">Confirm Password</label>
+                                <div class="password-wrapper">
+                                    <input type="password" id="confirmPassword" class="form-control border"
+                                        placeholder="Confirm password">
+                                    <span class="toggle-password" data-target="confirmPassword">
+                                        <i class="fa fa-eye"></i>
+                                    </span>
+                                </div>
+                                <small class="error-msg" id="confirmPasswordError"></small>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end -->
+
+                    <!-- Phone number with country code (Australian format) > Custom -->
+                    <div class="field-group">
+                        <label class="form-label">Phone Number</label>
+                        <div class="phone-wrapper">
+                            <span class="country-code input-group-text">+61</span>
+                            <input type="tel" id="phoneNumber" class="form-control border" placeholder="4XXX XXX XXX"
+                                maxlength="12">
+                        </div>
+                        <small class="error-msg" id="phoneError"></small>
+                    </div>
+                    <!-- end -->
+
+
+                    <!-- Radio Button & Checkbox v1 > Custom -->
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <!-- Radio Button > Custom -->
+                            <div class="field-group">
+                                <label class="form-label">Select Gender</label>
+                                <div class="radio-field-wrap">
+                                    <label class="option-item">
+                                        <input type="radio" name="gender" value="male">
+                                        <div class="radiobtn"></div>
+                                        <div class="content">
+                                            <h6 class="mb-0">Male</h6>
+                                        </div>
+                                    </label>
+
+                                    <label class="option-item">
+                                        <input type="radio" name="gender" value="female" checked>
+                                        <div class="radiobtn"></div>
+                                        <div class="content">
+                                            <h6 class="mb-0">Female</h6>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                            <!-- end -->
+                        </div>
+                        <div class="col-lg-6">
+                            <!-- Checkbox Button > Custom -->
+                            <div class="field-group">
+                                <label class="form-label">Select Interests</label>
+                                <div class="radio-field-wrap">
+                                    <label class="option-item">
+                                        <input type="checkbox" value="design">
+                                        <div class="checkmark"></div>
+                                        <div class="content">
+                                            <h6 class="mb-0">Design</h6>
+                                        </div>
+                                    </label>
+
+                                    <label class="option-item">
+                                        <input type="checkbox" value="development" checked>
+                                        <div class="checkmark"></div>
+                                        <div class="content">
+                                            <h6 class="mb-0">Development</h6>
+                                        </div>
+                                    </label>
+
+                                    <label class="option-item">
+                                        <input type="checkbox" value="marketing">
+                                        <div class="checkmark"></div>
+                                        <div class="content">
+                                            <h6 class="mb-0">Marketing</h6>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- end -->
+                        </div>
+                    </div>
+
+                    <!-- Tag-style Radio Button & Checkbox v2 > Custom -->
+                    <div class="field-group">
+                        <label class="form-label">Tags</label>
+                        <div class="tag-group">
+                            <label class="tag-item">
+                                <input type="checkbox" id="tagReview" name="tags" value="Review">
+                                <span class="tag">#Review</span>
+                            </label>
+
+                            <label class="tag-item">
+                                <input type="checkbox" id="tagFeedback" name="tags" value="Feedback">
+                                <span class="tag">#Feedback</span>
+                            </label>
+
+                            <label class="tag-item">
+                                <input type="checkbox" id="tagUI" name="tags" value="UI" checked>
+                                <span class="tag">#UI</span>
+                            </label>
+
+                            <label class="tag-item">
+                                <input type="checkbox" id="tagUX" name="tags" value="UX" checked>
+                                <span class="tag">#UX</span>
+                            </label>
+
+                            <label class="tag-item">
+                                <input type="checkbox" id="tagAnalysis" name="tags" value="Analysis">
+                                <span class="tag">#Analysis</span>
+                            </label>
+
+                            <label class="tag-item">
+                                <input type="checkbox" id="tagSummary" name="tags" value="Summary">
+                                <span class="tag">#Summary</span>
+                            </label>
+
+                            <label class="tag-item">
+                                <input type="checkbox" id="tagEvaluation" name="tags" value="Evaluation">
+                                <span class="tag">#Evaluation</span>
+                            </label>
+                        </div>
+
+                        <small class="error-msg" id="tagError"></small>
+                    </div>
+
+                    <!-- Radio -->
+                    <div class="field-group">
+                        <label class="form-label">What is your preferred work type?</label>
+                        <div class="tag-group">
+                            <label class="tag-item">
+                                <input type="radio" id="WorkRemote" name="WorkType" value="Remote">
+                                <span class="tag">
+                                    <svg class="tag-icon" fill="#4D4D4D" width="64px" height="64px"
+                                        viewBox="0 0 100.00 100.00" xmlns="http://www.w3.org/2000/svg" stroke="#4D4D4D"
+                                        stroke-width="0.001">
+                                        <g id="SVGRepo_bgCarrier" stroke-width="0" />
+                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"
+                                            stroke="#4D4D4D" stroke-width="0.4" />
+                                        <g id="SVGRepo_iconCarrier">
+                                            <path
+                                                d="M75.87,29.25l-9-8.88A1.13,1.13,0,0,0,66,20a1.39,1.39,0,0,0-1.38,1.38v6.38a3.89,3.89,0,0,0,3.87,3.87h6.37a1.39,1.39,0,0,0,1.38-1.38A1.66,1.66,0,0,0,75.87,29.25Z"
+                                                fill-rule="evenodd" />
+                                            <path
+                                                d="M29.63,62.63v-31a5.84,5.84,0,0,0-5.88,5.75V74.12A5.87,5.87,0,0,0,29.63,80H58.75a5.84,5.84,0,0,0,5.88-5.75H41.25C34.88,74.25,29.63,74.25,29.63,62.63Z"
+                                                fill-rule="evenodd" />
+                                            <path
+                                                d="M74.25,37.38H64.5a5.84,5.84,0,0,1-5.87-5.75V21.88A1.77,1.77,0,0,0,56.75,20H41.25a5.84,5.84,0,0,0-5.87,5.75V62.5a5.76,5.76,0,0,0,5.88,5.75H70.38a5.84,5.84,0,0,0,5.88-5.75V39.38A2,2,0,0,0,74.25,37.38ZM49.91,62.22a2.49,2.49,0,0,1-2.49,2.49h-5A2.49,2.49,0,0,1,40,62.22v-5a2.49,2.49,0,0,1,2.49-2.49h5a2.49,2.49,0,0,1,2.49,2.49Zm0-13.68A2.49,2.49,0,0,1,47.43,51h-5A2.49,2.49,0,0,1,40,48.54v-5a2.49,2.49,0,0,1,2.49-2.49h5a2.49,2.49,0,0,1,2.49,2.49ZM63.59,62.22A2.49,2.49,0,0,1,61.1,64.7h-5a2.49,2.49,0,0,1-2.49-2.49v-5a2.49,2.49,0,0,1,2.49-2.49h5a2.49,2.49,0,0,1,2.49,2.49Zm0-13.68A2.49,2.49,0,0,1,61.1,51h-5a2.49,2.49,0,0,1-2.49-2.49v-5a2.49,2.49,0,0,1,2.49-2.49h5a2.49,2.49,0,0,1,2.49,2.49Z"
+                                                fill-rule="evenodd" />
+                                        </g>
+                                    </svg>
+                                    Remote
+                                </span>
+                            </label>
+
+                            <label class="tag-item">
+                                <input type="radio" id="WorkHybrid" name="WorkType" value="Hybrid">
+                                <span class="tag">
+                                    <svg class="tag-icon" fill="#4D4D4D" width="64px" height="64px"
+                                        viewBox="0 0 100.00 100.00" xmlns="http://www.w3.org/2000/svg" stroke="#4D4D4D"
+                                        stroke-width="0.001">
+                                        <g id="SVGRepo_bgCarrier" stroke-width="0" />
+                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"
+                                            stroke="#4D4D4D" stroke-width="0.4" />
+                                        <g id="SVGRepo_iconCarrier">
+                                            <path
+                                                d="M75.87,29.25l-9-8.88A1.13,1.13,0,0,0,66,20a1.39,1.39,0,0,0-1.38,1.38v6.38a3.89,3.89,0,0,0,3.87,3.87h6.37a1.39,1.39,0,0,0,1.38-1.38A1.66,1.66,0,0,0,75.87,29.25Z"
+                                                fill-rule="evenodd" />
+                                            <path
+                                                d="M29.63,62.63v-31a5.84,5.84,0,0,0-5.88,5.75V74.12A5.87,5.87,0,0,0,29.63,80H58.75a5.84,5.84,0,0,0,5.88-5.75H41.25C34.88,74.25,29.63,74.25,29.63,62.63Z"
+                                                fill-rule="evenodd" />
+                                            <path
+                                                d="M74.25,37.38H64.5a5.84,5.84,0,0,1-5.87-5.75V21.88A1.77,1.77,0,0,0,56.75,20H41.25a5.84,5.84,0,0,0-5.87,5.75V62.5a5.76,5.76,0,0,0,5.88,5.75H70.38a5.84,5.84,0,0,0,5.88-5.75V39.38A2,2,0,0,0,74.25,37.38ZM49.91,62.22a2.49,2.49,0,0,1-2.49,2.49h-5A2.49,2.49,0,0,1,40,62.22v-5a2.49,2.49,0,0,1,2.49-2.49h5a2.49,2.49,0,0,1,2.49,2.49Zm0-13.68A2.49,2.49,0,0,1,47.43,51h-5A2.49,2.49,0,0,1,40,48.54v-5a2.49,2.49,0,0,1,2.49-2.49h5a2.49,2.49,0,0,1,2.49,2.49ZM63.59,62.22A2.49,2.49,0,0,1,61.1,64.7h-5a2.49,2.49,0,0,1-2.49-2.49v-5a2.49,2.49,0,0,1,2.49-2.49h5a2.49,2.49,0,0,1,2.49,2.49Zm0-13.68A2.49,2.49,0,0,1,61.1,51h-5a2.49,2.49,0,0,1-2.49-2.49v-5a2.49,2.49,0,0,1,2.49-2.49h5a2.49,2.49,0,0,1,2.49,2.49Z"
+                                                fill-rule="evenodd" />
+                                        </g>
+                                    </svg>
+                                    Hybrid
+                                </span>
+                            </label>
+
+                            <label class="tag-item">
+                                <input type="radio" id="WorkOffice" name="WorkType" value="Office" checked>
+                                <span class="tag">
+                                    <svg class="tag-icon" fill="#4D4D4D" width="64px" height="64px"
+                                        viewBox="0 0 100.00 100.00" xmlns="http://www.w3.org/2000/svg" stroke="#4D4D4D"
+                                        stroke-width="0.001">
+                                        <g id="SVGRepo_bgCarrier" stroke-width="0" />
+                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"
+                                            stroke="#4D4D4D" stroke-width="0.4" />
+                                        <g id="SVGRepo_iconCarrier">
+                                            <path
+                                                d="M75.87,29.25l-9-8.88A1.13,1.13,0,0,0,66,20a1.39,1.39,0,0,0-1.38,1.38v6.38a3.89,3.89,0,0,0,3.87,3.87h6.37a1.39,1.39,0,0,0,1.38-1.38A1.66,1.66,0,0,0,75.87,29.25Z"
+                                                fill-rule="evenodd" />
+                                            <path
+                                                d="M29.63,62.63v-31a5.84,5.84,0,0,0-5.88,5.75V74.12A5.87,5.87,0,0,0,29.63,80H58.75a5.84,5.84,0,0,0,5.88-5.75H41.25C34.88,74.25,29.63,74.25,29.63,62.63Z"
+                                                fill-rule="evenodd" />
+                                            <path
+                                                d="M74.25,37.38H64.5a5.84,5.84,0,0,1-5.87-5.75V21.88A1.77,1.77,0,0,0,56.75,20H41.25a5.84,5.84,0,0,0-5.87,5.75V62.5a5.76,5.76,0,0,0,5.88,5.75H70.38a5.84,5.84,0,0,0,5.88-5.75V39.38A2,2,0,0,0,74.25,37.38ZM49.91,62.22a2.49,2.49,0,0,1-2.49,2.49h-5A2.49,2.49,0,0,1,40,62.22v-5a2.49,2.49,0,0,1,2.49-2.49h5a2.49,2.49,0,0,1,2.49,2.49Zm0-13.68A2.49,2.49,0,0,1,47.43,51h-5A2.49,2.49,0,0,1,40,48.54v-5a2.49,2.49,0,0,1,2.49-2.49h5a2.49,2.49,0,0,1,2.49,2.49ZM63.59,62.22A2.49,2.49,0,0,1,61.1,64.7h-5a2.49,2.49,0,0,1-2.49-2.49v-5a2.49,2.49,0,0,1,2.49-2.49h5a2.49,2.49,0,0,1,2.49,2.49Zm0-13.68A2.49,2.49,0,0,1,61.1,51h-5a2.49,2.49,0,0,1-2.49-2.49v-5a2.49,2.49,0,0,1,2.49-2.49h5a2.49,2.49,0,0,1,2.49,2.49Z"
+                                                fill-rule="evenodd" />
+                                        </g>
+                                    </svg>
+                                    Office
+                                </span>
+                            </label>
+
+                            <label class="tag-item">
+                                <input type="radio" id="WorkFreelance" name="WorkType" value="Freelance">
+                                <span class="tag">
+                                    <svg class="tag-icon" fill="#4D4D4D" width="64px" height="64px"
+                                        viewBox="0 0 100.00 100.00" xmlns="http://www.w3.org/2000/svg" stroke="#4D4D4D"
+                                        stroke-width="0.001">
+                                        <g id="SVGRepo_bgCarrier" stroke-width="0" />
+                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"
+                                            stroke="#4D4D4D" stroke-width="0.4" />
+                                        <g id="SVGRepo_iconCarrier">
+                                            <path
+                                                d="M75.87,29.25l-9-8.88A1.13,1.13,0,0,0,66,20a1.39,1.39,0,0,0-1.38,1.38v6.38a3.89,3.89,0,0,0,3.87,3.87h6.37a1.39,1.39,0,0,0,1.38-1.38A1.66,1.66,0,0,0,75.87,29.25Z"
+                                                fill-rule="evenodd" />
+                                            <path
+                                                d="M29.63,62.63v-31a5.84,5.84,0,0,0-5.88,5.75V74.12A5.87,5.87,0,0,0,29.63,80H58.75a5.84,5.84,0,0,0,5.88-5.75H41.25C34.88,74.25,29.63,74.25,29.63,62.63Z"
+                                                fill-rule="evenodd" />
+                                            <path
+                                                d="M74.25,37.38H64.5a5.84,5.84,0,0,1-5.87-5.75V21.88A1.77,1.77,0,0,0,56.75,20H41.25a5.84,5.84,0,0,0-5.87,5.75V62.5a5.76,5.76,0,0,0,5.88,5.75H70.38a5.84,5.84,0,0,0,5.88-5.75V39.38A2,2,0,0,0,74.25,37.38ZM49.91,62.22a2.49,2.49,0,0,1-2.49,2.49h-5A2.49,2.49,0,0,1,40,62.22v-5a2.49,2.49,0,0,1,2.49-2.49h5a2.49,2.49,0,0,1,2.49,2.49Zm0-13.68A2.49,2.49,0,0,1,47.43,51h-5A2.49,2.49,0,0,1,40,48.54v-5a2.49,2.49,0,0,1,2.49-2.49h5a2.49,2.49,0,0,1,2.49,2.49ZM63.59,62.22A2.49,2.49,0,0,1,61.1,64.7h-5a2.49,2.49,0,0,1-2.49-2.49v-5a2.49,2.49,0,0,1,2.49-2.49h5a2.49,2.49,0,0,1,2.49,2.49Zm0-13.68A2.49,2.49,0,0,1,61.1,51h-5a2.49,2.49,0,0,1-2.49-2.49v-5a2.49,2.49,0,0,1,2.49-2.49h5a2.49,2.49,0,0,1,2.49,2.49Z"
+                                                fill-rule="evenodd" />
+                                        </g>
+                                    </svg>
+                                    Freelance
+                                </span>
+                            </label>
+                        </div>
+                        <small class="error-msg" id="WorkTypeError"></small>
+                    </div>
+
+                    <!-- Toggle Button Fields > Custom -->
+                    <div class="field-group">
+                        <div class="toggle-card">
+                            <div class="toggle-content">
+                                <div class="icon-box">
+                                    <img src="./assets/images/cal-img.svg" alt="">
+                                </div>
+                                <div class="text-content">
+                                    <span class="subtitle">Show in Calendar</span>
+                                    <p class="mt-1 mb-0">Add this task to your calendar view</p>
+                                </div>
+                            </div>
+
+                            <label class="switch">
+                                <input type="checkbox" id="calendarToggle" class="checkbox">
+                                <span class="toggleslide"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <!-- end -->
+
+                    <!-- Toggle Input Switch > Custom -->
+                    <div class="field-group">
+                        <div class="switch-toggle-wrap">
+                            <label class="switch-toggle-label free">
+                                <input type="radio" name="plan" value="free" checked>
+                                <span class="labeltext">Free</span>
+                            </label>
+
+                            <label class="switch-toggle-label premium">
+                                <input type="radio" name="plan" value="premium">
+                                <span class="labeltext">Premium</span>
+                            </label>
+                            <span class="slide-bg"></span>
+                        </div>
+                    </div>
+                    <!-- end -->
+
+                    <!-- Multi Select Dropdown Fields > Custom -->
+                    <div class="field-group">
+                        <label class="form-label">Multi Select Options</label>
+                        <div class="custom-multiselect">
+                            <select name="customSelect" id="customSelect" class="form-control border" multiple>
+                                <option value="Meetings">#Meetings</option>
+                                <option value="Work">#Work</option>
+                                <option value="Clients">#Clients</option>
+                                <option value="Review">#Review</option>
+                                <option value="Feedback">#Feedback</option>
+                                <option value="Analysis">#Analysis</option>
+                            </select>
+                        </div>
+                    </div>
+                    <!-- end -->
+
+                    <!-- Input Range Single Slider -->
+                    <div class="field-group">
+                        <label class="form-label">Input Range Single Slider</label>
+                        <div class="input-range-slider">
+
+                            <div class="range-slider">
+                                <input type="range" min="0" max="100" value="0" class="range-input" id="range"
+                                    step="25" />
+                                <div class="sliderticks">
+                                    <span>0</span>
+                                    <span>25</span>
+                                    <span>50</span>
+                                    <span>75</span>
+                                    <span>100</span>
+                                </div>
+                            </div>
+
+                            <div class="total-value">
+                                <p class="mb-1">Total</p>
+                                <div class="value">0</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end -->
+
+                    <!-- Input Range Double Slider -->
+                    <div class="field-group">
+                        <label class="form-label">Input Range Double Slider</label>
+                        <div class="double-range-slider">
+                            <div class="vals-row">
+                                <p class="mb-0 fw-semibold">Selected Price</p>
+                                <div class="value-selected-range">
+                                    <span class="val-badge" id="val_min">From
+                                        <input type="number" class="marktext" id="input_min" value="0" min="0"
+                                            max="500" />
+                                    </span>
+                                    <span class="val-badge" id="val_max">To
+                                        <input type="number" class="marktext" id="input_max" value="400" min="0"
+                                            max="500" />
+                                    </span>
+                                </div>
+                            </div>
+                            <!-- <div id="minMsg"></div> -->
+
+                            <div class="double-range-wrap range-slider">
+                                <div class="track-bg"></div>
+                                <div class="track-fill" id="fill"></div>
+                                <input type="range" min="0" max="500" value="0" class="range-input" id="range_min"
+                                    step="1" />
+                                <input type="range" min="0" max="500" value="400" class="range-input" id="range_max"
+                                    step="1" />
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end -->
+
+                    <!-- Date Picker -->
+                    <div class="field-group">
+                        <label class="form-label">Select Date</label>
+                        <input id="datepicker" placeholder="Select date" class="form-control border datepicker">
+                    </div>
+
+                    <!-- Textarea Field -->
+                    <div class="field-group">
+                        <label class="form-label">Message</label>
+                        <textarea class="form-control border" placeholder="Enter your message" id="message"
+                            name="message" rows="4" maxlength="200"></textarea>
+                        <small class="error-msg" id="messageError"></small>
+                    </div>
+                    <!-- end -->
+
+                    <!-- Upload Document > Custom -->
+                    <div class="field-group file-upload-field">
+                        <label class="form-label">Upload File</label>
+                        <div class="upload-box" id="uploadBox">
+                            <input type="file" id="fileInput" multiple hidden>
+                            <img src="assets/images/file-upload-icon.svg" alt="file upload icon"
+                                class="file-upload-icon">
+                            <p>Choose a file or drag & drop it here.</p>
+                            <small>Only support .jpg, .jpeg, .png format.</small>
+                        </div>
+                        <div id="filePreview"></div>
+                    </div>
+
+                    <!-- end -->
+
+                    <button type="submit" id="submitBtn" class="btn btn-submit">
+                        <span class="btn-submittext">Submit</span>
+                        <span class="btn-loader"></span>
+                    </button>
+                    <!-- Success Message -->
+                    <span id="formMsg" class="form-msg"></span>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- JS Script Links -->
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/select2.min.js"></script>
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/flatpickr.js"></script>
+    <script src="assets/js/custom.js" defer></script>
+
+</body>
+
+</html>

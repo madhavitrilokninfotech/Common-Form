@@ -1,0 +1,329 @@
+/* Add your responsive styles here */
+@media (max-width: 992px) {
+    .range-input {
+        height: 6px;
+    }
+
+    .range-input::-moz-range-thumb {
+        height: 16px;
+        width: 16px;
+    }
+
+    .range-input::-webkit-slider-thumb {
+        height: 16px;
+        width: 16px;
+    }
+
+    .sliderticks {
+        padding: 4px 10px 0;
+    }
+
+    .sliderticks span {
+        height: 6px;
+        line-height: 30px;
+        font-size: 12px;
+    }
+
+    .total-value {
+        padding: 0 20px;
+        min-width: 90px;
+    }
+
+    .switch-toggle-label {
+        font-size: 15px;
+        padding: 12px 14px;
+    }
+
+    .select2-container--default .select2-results>.select2-results__options {
+        box-shadow: 1px 1px 8px 4px #D8DADC;
+    }
+
+    .select2-container--default .select2-selection--multiple .select2-selection__choice {
+        padding: 6px 8px;
+        font-size: 12px;
+    }
+
+    .select2-results__option--selectable {
+        padding: 8px 12px;
+    }
+
+    .select2-container .select2-selection--multiple .select2-selection__rendered {
+        gap: 4px 4px;
+    }
+
+    .select2-container--default .select2-selection--multiple.select2-selection--clearable {
+        padding-right: 36px;
+    }
+
+    .select2-container .select2-search--inline .select2-search__field {
+        font-size: 14px;
+    }
+
+    .form-control.border::placeholder,
+    .input-group-text {
+        font-size: 14px;
+    }
+
+    .form-control.border,
+    .select2-container .select2-selection--multiple {
+        padding: 12px 14px;
+        font-size: 14px;
+    }
+
+    .form-container {
+        max-width: 100%;
+        padding: 20px 30px;
+    }
+
+    .option-item {
+        gap: 8px;
+    }
+
+    .checkmark {
+        width: 18px;
+        height: 18px;
+    }
+
+    .checkmark::after {
+        font-size: 10px;
+        display: block;
+        padding: 2px;
+    }
+
+    .radiobtn::after {
+        width: 10px;
+        height: 10px;
+    }
+
+    .radiobtn {
+        width: 18px;
+        height: 18px;
+    }
+
+    .upload-box .file-upload-icon {
+        width: 44px;
+    }
+
+    .upload-box p {
+        font-size: 14px;
+    }
+
+    .btn {
+        padding: 15px 20px;
+    }
+
+    .form-control.border.datepicker {
+        background-size: 15px;
+        background-position: right 14px center;
+        padding-right: 35px;
+    }
+
+    .tag-group {
+        gap: 6px;
+    }
+
+    .tag {
+        font-size: 12px;
+    }
+
+    .tag-icon {
+        width: 20px;
+        height: 20px;
+    }
+
+    .arrow-input-wrap::after {
+        width: 14px;
+        height: 14px;
+    }
+
+    .toggle-card {
+        padding: 12px 14px;
+    }
+}
+
+@media (max-width: 575px) {
+
+    /* Double range slider */
+    .double-range-wrap.range-slider {
+        height: 25px;
+    }
+
+    .value-selected-range {
+        font-size: 13px;
+        gap: 6px;
+    }
+
+    .value-selected-range .marktext {
+        font-size: 13px;
+        padding: 4px 8px;
+    }
+
+    .vals-row p {
+        font-size: 13px;
+    }
+
+    .vals-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+        padding: 8px 10px;
+        background-color: #FBEDE5;
+        border-radius: 10px;
+    }
+
+    /* end */
+    /* single range slider */
+    .total-value {
+        display: flex;
+        padding: 10px 14px;
+        min-width: auto;
+        text-align: start;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        background-color: #fff;
+        margin-bottom: 10px;
+        border-radius: 10px;
+        -webkit-border-radius: 12px;
+        -moz-border-radius: 12px;
+        -ms-border-radius: 12px;
+        -o-border-radius: 12px;
+    }
+
+    .total-value p {
+        margin-bottom: 0 !important;
+        padding-right: 14px;
+    }
+
+    .input-range-slider {
+        flex-direction: column-reverse;
+        align-items: start;
+        padding-bottom: 20px;
+    }
+
+    .range-slider {
+        width: 100%;
+    }
+
+    .range-input::-moz-range-thumb {
+        height: 14px;
+        width: 14px;
+    }
+
+    .range-input::-webkit-slider-thumb {
+        height: 14px;
+        width: 14px;
+    }
+
+    /* end */
+    .flatpickr-calendar {
+        margin: 0 auto;
+        right: 0 !important;
+        left: 0 !important;
+    }
+
+    span.flatpickr-weekday {
+        font-size: 12px;
+    }
+
+    .flatpickr-day {
+        width: 34px;
+        max-width: 34px;
+        height: 34px;
+        line-height: 34px;
+        font-size: 12px;
+    }
+
+    .dayContainer {
+        padding: 0 6px;
+        gap: 2px;
+    }
+
+    .flatpickr-months {
+        padding: 6px 6px 0;
+    }
+
+    .flatpickr-weekdays {
+        padding: 10px 6px 6px;
+    }
+
+    .flatpickr-months .flatpickr-prev-month,
+    .flatpickr-months .flatpickr-next-month {
+        top: 7px;
+        width: 32px;
+        height: 32px;
+        margin: 0 6px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .toggle-card .checkbox:checked+.toggleslide::after {
+        transform: translate(17px, -50%);
+        -webkit-transform: translate(17px, -50%);
+        -moz-transform: translate(17px, -50%);
+        -ms-transform: translate(17px, -50%);
+        -o-transform: translate(17px, -50%);
+    }
+
+    .toggle-content {
+        gap: 8px;
+    }
+
+    .toggle-card .toggleslide {
+        width: 44px;
+        height: 26px;
+    }
+
+    .toggle-card .toggleslide::after {
+        width: 20px;
+        height: 20px;
+    }
+
+    .text-content p {
+        font-size: 12px;
+    }
+
+    .text-content .subtitle {
+        font-size: 14px;
+    }
+
+    .form-body {
+        padding: 30px 10px;
+    }
+
+    .form-container {
+        padding: 20px 16px;
+    }
+
+    .form-header {
+        padding: 16px 16px;
+    }
+
+    .radio-field-wrap {
+        padding: 8px 0;
+    }
+
+    .form-control.border {
+        padding: 10px 14px;
+        border-radius: 10px;
+    }
+
+    .btn {
+        border-radius: 10px;
+    }
+
+    .upload-box {
+        padding: 12px;
+        border-radius: 12px;
+        -webkit-border-radius: 12px;
+        -moz-border-radius: 12px;
+        -ms-border-radius: 12px;
+        -o-border-radius: 12px;
+    }
+
+    .upload-box .file-upload-icon {
+        width: 40px;
+    }
+}
