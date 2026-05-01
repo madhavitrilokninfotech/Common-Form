@@ -217,6 +217,8 @@ textarea.form-control.border {
     height: 108px;
 }
 
+/* ── Universal (Chrome, Edge, Opera) ── */
+input:autofill,
 input::-webkit-autofill,
 input::-webkit-autofill:hover,
 input::-webkit-autofill:focus,
@@ -228,6 +230,34 @@ select::-webkit-autofill:hover,
 select::-webkit-autofill:focus {
     -webkit-box-shadow: 0 0 0px 1000px #fff inset !important;
 }
+
+/* ── Fix Safari autofill yellow background ── */
+input:autofill,
+input:-webkit-autofill-strong-password,
+input:-webkit-autofill-strong-password-viewable,
+input:-webkit-autofill-and-obscured {
+    background-color: #fff !important;
+    border-color: #C67C4E !important;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+/* ── Safari autofill input icon remove ── */
+input::-webkit-contacts-auto-fill-button {
+    visibility: hidden;
+    display: none !important;
+    pointer-events: none;
+    position: absolute;
+    right: 0;
+}
+
+/* ── Firefox autofill fix ── */
+input:-moz-autofill,
+input:-moz-autofill-preview {
+    filter: none !important;
+    background-color: #ffffff !important;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
 
 
 /************* Multi Select Dropdown > Custom *************/
@@ -298,6 +328,31 @@ select::-webkit-autofill:focus {
 
 .select2-selection.select2-selection--multiple.select2-selection--clearable>.select2-search.select2-search--inline {
     display: none;
+}
+
+/* WebKit (Chrome, Safari, Edge) */
+.select2-container--default .select2-results>.select2-results__options::-webkit-scrollbar {
+    width: 4px;
+}
+
+.select2-container--default .select2-results>.select2-results__options::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.select2-container--default .select2-results>.select2-results__options::-webkit-scrollbar-thumb {
+    background: #C67C4E;
+    border-radius: 10px;
+}
+
+.select2-container--default .select2-results>.select2-results__options::-webkit-scrollbar-thumb:hover {
+    background: #a85f35;
+}
+
+/* Firefox */
+.select2-container--default .select2-results>.select2-results__options {
+    scrollbar-width: thin;
+    scrollbar-color: #dddddd;
 }
 
 /* new */
@@ -1051,6 +1106,7 @@ span.flatpickr-weekday {
 /************* Input Range Single Slider CSS  *************/
 .range-input {
     -webkit-appearance: none;
+    -moz-appearance: none;
     appearance: none;
     width: 100%;
     cursor: pointer;
@@ -1072,12 +1128,28 @@ span.flatpickr-weekday {
 }
 
 .range-input::-moz-range-thumb {
+    -moz-appearance: none;
     height: 18px;
     width: 18px;
     background-color: #C67C4E;
     border-radius: 50%;
+    border: 2px solid #C67C4E;
+    box-sizing: border-box;
     border: none;
     transition: .2s ease-in-out;
+}
+
+.range-input::-moz-range-track {
+    background: #ccc;
+    border-radius: 15px;
+    height: 10px;
+    border: none;
+}
+
+.range-input::-moz-range-progress {
+    background-color: #C67C4E;
+    border-radius: 15px;
+    height: 10px;
 }
 
 .sliderticks {
@@ -1152,6 +1224,7 @@ span.flatpickr-weekday {
     margin-left: 2px;
     border: 1px solid #D8DADC;
     border-radius: 4px;
+    max-width: 50px;
 }
 
 .val-badge {
@@ -1162,6 +1235,7 @@ span.flatpickr-weekday {
 .marktext::-webkit-outer-spin-button,
 .marktext::-webkit-inner-spin-button {
     -webkit-appearance: none;
+    margin: 0;
 }
 
 .marktext {
@@ -1197,12 +1271,43 @@ span.flatpickr-weekday {
     height: 4px;
     margin: 0;
     appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
     background: transparent;
     pointer-events: none;
 }
 
+.range-input::-moz-range-progress {
+    background: transparent;
+    height: 4px;
+}
+
+.range-input::-moz-range-track {
+    background: transparent;
+    height: 4px;
+    border: none;
+    box-shadow: none;
+}
+
 .range-input::-webkit-slider-thumb {
     -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #fff;
+    border: 2px solid #C67C4E;
+    cursor: pointer;
+    pointer-events: all;
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease;
+    -webkit-transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease;
+    -moz-transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease;
+    -ms-transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease;
+    -o-transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease;
+}
+
+.range-input::-moz-range-thumb {
+    -moz-appearance: none;
+    appearance: none;
     width: 20px;
     height: 20px;
     border-radius: 50%;
@@ -1226,6 +1331,17 @@ span.flatpickr-weekday {
     transform: scale(0.92);
     box-shadow: 0px 0px 8px 2px rgba(198, 124, 78, 0.4);
 }
+
+.range-input:hover::-moz-range-thumb {
+    transform: scale(1.2);
+    box-shadow: 0px 0px 8px 2px rgba(198, 124, 78, 0.4);
+}
+
+.range-input:active::-moz-range-thumb {
+    transform: scale(0.92);
+    box-shadow: 0px 0px 8px 2px rgba(198, 124, 78, 0.4);
+}
+
 
 /* end */
 
