@@ -1933,6 +1933,11 @@ span.flatpickr-weekday {
 }
 
 /* Range Header Styles */
+.custom_date_range_pickr {
+    caret-color: transparent;
+    user-select: none;
+}
+
 .range-header {
     display: flex;
     align-items: center;
@@ -1973,7 +1978,7 @@ span.flatpickr-weekday {
     font-size: 11px;
     color: #000;
     font-weight: 600;
-    margin-bottom: 3px;
+    margin-bottom: 10px;
     text-transform: capitalize;
     letter-spacing: 0.3px;
 }

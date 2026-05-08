@@ -544,7 +544,7 @@ $(function () {
 
     $rangePicker.datetimepicker({
         format: "DD/MM/YYYY",
-        debug: true,
+        // debug: true,
         useCurrent: false,
         keepOpen: true,
         icons: {
@@ -554,8 +554,16 @@ $(function () {
     });
 
     const rangePickerObj = $rangePicker.data("DateTimePicker");
-    console.log(rangePickerObj);
-    rangePickerObj.show();
+    // console.log(rangePickerObj);
+    // rangePickerObj.show();
+
+    // Mobile Click
+    if (window.innerWidth < 768) {
+        $rangePicker.on('touchstart', function () {
+            // hide mobile keyboard
+            document.activeElement.blur();
+        });
+    }
 
 
     // =========================
@@ -576,36 +584,36 @@ $(function () {
 
         // append header
         const headerHTML = `
-            <div class="range-header">
+                <div class="range-header">
 
-                <button class="range-date-box ${selectingType === 'start' ? 'active' : ''}" id="startDateBox" type="button">
+                    <button class="range-date-box ${selectingType === 'start' ? 'active' : ''}" id="startDateBox" type="button">
 
-                    <div class="range-label">Start</div>
+                        <div class="range-label">Start</div>
 
-                    <div class="range-value" id="startDateDisplay">
-                        ${startDate ? startDate.format('DD/MM/YYYY') : 'Please select'}
-                    </div>
+                        <div class="range-value" id="startDateDisplay">
+                            ${startDate ? startDate.format('DD/MM/YYYY') : 'Please select'}
+                        </div>
 
-                </button>
-
-
-                <button class="range-date-box ${selectingType === 'end' ? 'active' : ''}" id="endDateBox" type="button">
-
-                    <div class="range-label">End</div>
-
-                    <div class="range-value" id="endDateDisplay">
-                        ${endDate ? endDate.format('DD/MM/YYYY') : 'Please select'}
-                    </div>
-
-                </button>
+                    </button>
 
 
-                <button class="range-clear-btn" id="clearRangeBtn" type="button">
-                    <i class="fa fa-times"></i>
-                </button>
+                    <button class="range-date-box ${selectingType === 'end' ? 'active' : ''}" id="endDateBox" type="button">
 
-            </div>
-        `;
+                        <div class="range-label">End</div>
+
+                        <div class="range-value" id="endDateDisplay">
+                            ${endDate ? endDate.format('DD/MM/YYYY') : 'Please select'}
+                        </div>
+
+                    </button>
+
+
+                    <button class="range-clear-btn" id="clearRangeBtn" type="button">
+                        <i class="fa fa-times"></i>
+                    </button>
+
+                </div>
+            `;
 
         $widget.find('.datepicker').prepend(headerHTML);
 
