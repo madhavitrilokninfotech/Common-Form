@@ -546,6 +546,7 @@ $(function () {
         format: "DD/MM/YYYY",
         // debug: true,
         useCurrent: false,
+        ignoreReadonly: true,
         keepOpen: true,
         icons: {
             previous: 'fa fa-chevron-left',
