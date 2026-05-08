@@ -28,25 +28,53 @@
             </div>
             <div class="form-body">
                 <!-- Donut chart -->
-                <div class="chart-container">
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="chart-wrap">
-                                <div class="tooltip" id="tooltip">
-                                    <div class="tooltip-title"></div>
-                                    <div class="tooltip-body"></div>
+                <div class="order-chart-main">
+                    <div class="chart-header">
+                        <h1 class="text-center mb-3">Donut Chart</h1>
+                    </div>
+
+                    <div class="chart-container">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="chart-wrap">
+                                    <canvas id="orderChart" width="350" height="350"></canvas>
+                                    <div class="center-info">
+                                        <div class="center-value" id="totalOrders">0</div>
+                                        <div class="center-label">Total Orders</div>
+                                    </div>
                                 </div>
-                                <canvas id="donutChart" width="250" height="250"></canvas>
-                                <div class="total-text-center" id="totalText"></div>
                             </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="chart-list-wrap">
-                                <div class="labels" id="labels"></div>
-                                <ul class="breakdown" id="breakdown"></ul>
+                            <div class="col-md-6">
+                                <div class="legend-section">
+                                    <div class="legend-title">Order Status Breakdown</div>
+                                    <div class="chart-list-wrap">
+                                        <ul class="breakdown" id="breakdown"></ul>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
+
+                    <div class="tooltip" id="tooltip"></div>
+                </div>
+
+                <!-- Pie chart using E-charts library -->
+                <div class="piechart-main">
+                    <div id="pieChartContainer" class="piechart-wrap"></div>
+
+                    <!-- Pie chart using HTML canvas no use library -->
+                    <!-- <div class="chart-section">
+                        <div class="chart-wrapper">
+                            <canvas id="pieChart" width="350" height="350"></canvas>
+                        </div>
+
+                        <div class="breakdown-section">
+                            <div class="breakdown-title">Data Breakdown</div>
+                            <ul class="breakdown" id="breakdown"></ul>
+                        </div>
+                    </div>
+
+                    <div class="tooltip" id="tooltip"></div> -->
                 </div>
             </div>
         </div>
@@ -57,215 +85,416 @@
     <script src="assets/js/select2.min.js"></script>
     <script src="assets/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/flatpickr.js"></script>
+    <script src="assets/js/echarts.min.js"></script>
     <script src="assets/js/custom.js" defer></script>
 
     <!-- Donut chart JS -->
     <script>
-        const data = [
-            { label: "Pending", value: 40, color: "#f39c12", visible: true },
-            { label: "Completed", value: 80, color: "#2ecc71", visible: true },
-            { label: "Cancelled", value: 20, color: "#e74c3c", visible: true },
-            { label: "Returned", value: 10, color: "#3498db", visible: true }
+        // Order status data
+        let orderData = [
+            { status: 'Completed', count: 850, color: '#2ecc71', icon: '✅' },
+            { status: 'Processing', count: 320, color: '#3498db', icon: '⚙️' },
+            { status: 'Pending', count: 180, color: '#f39c12', icon: '⏳' },
+            { status: 'Cancelled', count: 120, color: '#e74c3c', icon: '❌' },
+            { status: 'Refunded', count: 80, color: '#9b59b6', icon: '💰' }
         ];
 
-        const canvas = document.getElementById("donutChart");
-        const ctx = canvas.getContext("2d");
-        const tooltip = document.getElementById("tooltip");
+        let animationProgress = 1;
+        let showLabels = true;
 
-        const tooltipTitle = tooltip.querySelector(".tooltip-title");
-        const tooltipBody = tooltip.querySelector(".tooltip-body");
+        const CANVAS_SIZE = 350;
+        const OUTER_RADIUS = 140;
+        const INNER_RADIUS = 90;
 
-        let animationProgress = 0;
+        // Setup canvas for HD screens
+        function setupCanvas() {
+            const canvas = document.getElementById('orderChart');
+            const ctx = canvas.getContext('2d');
 
-        /* ==== HELPERS ==== */
-        function getTotalVisible() {
-            return data.filter(d => d.visible).reduce((sum, d) => sum + d.value, 0);
+            const parent = canvas.parentElement;
+            const size = parent.clientWidth; // responsive width
+
+            const dpr = window.devicePixelRatio || 1;
+
+            canvas.width = CANVAS_SIZE * dpr;
+            canvas.height = CANVAS_SIZE * dpr;
+
+            canvas.style.width = CANVAS_SIZE + "px";
+            canvas.style.height = CANVAS_SIZE + "px";
+
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+            return { canvas, ctx, size };
         }
 
-        function updateCenterText() {
-            const total = getTotalVisible();
-            document.getElementById("totalText").innerHTML =
-                `<span>Total Orders</span><br><span>${total}</span>`;
-        }
+        // Draw donut chart
+        function drawDonutChart() {
+            const { canvas, ctx } = setupCanvas();
 
-        /* ==== DRAW CHART ==== */
-        function drawChart(progress = 1) {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const centerX = CANVAS_SIZE / 2;
+            const centerY = CANVAS_SIZE / 2;
 
-            let startAngle = -Math.PI / 2;
+            ctx.clearRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
 
-            const visibleData = data.filter(d => d.visible);
-            const totalVisible = getTotalVisible();
+            const total = orderData.reduce((sum, item) => sum + item.count, 0);
 
-            visibleData.forEach(d => {
-                const sliceAngle = (d.value / totalVisible) * Math.PI * 2 * progress;
+            let currentAngle = -Math.PI / 2;
 
-                // Draw arc
+            orderData.forEach((item) => {
+                const sliceAngle = (item.count / total) * 2 * Math.PI * animationProgress;
+                const middleAngle = currentAngle + sliceAngle / 2;
+
+                // Draw slice
                 ctx.beginPath();
-                ctx.arc(125, 125, 100, startAngle, startAngle + sliceAngle);
-                ctx.arc(125, 125, 60, startAngle + sliceAngle, startAngle, true);
+                ctx.arc(centerX, centerY, OUTER_RADIUS, currentAngle, currentAngle + sliceAngle);
+                ctx.arc(centerX, centerY, INNER_RADIUS, currentAngle + sliceAngle, currentAngle, true);
                 ctx.closePath();
 
-                ctx.fillStyle = d.color;
+                // Gradient
+                const gradient = ctx.createRadialGradient(centerX, centerY, INNER_RADIUS, centerX, centerY, OUTER_RADIUS);
+                gradient.addColorStop(0, item.color);
+                gradient.addColorStop(1, lightenColor(item.color, 0.2));
+
+                ctx.fillStyle = gradient;
                 ctx.fill();
 
-                // ✅ FIXED ANGLES (important for tooltip)
-                d.start = startAngle + Math.PI / 2;
-                d.end = startAngle + sliceAngle + Math.PI / 2;
+                ctx.strokeStyle = "#fff";
+                ctx.lineWidth = 3;
+                ctx.stroke();
 
-                // ✅ % LABEL
-                const midAngle = (startAngle + startAngle + sliceAngle) / 2;
-                const labelRadius = 80;
+                // Labels
+                if (showLabels && animationProgress === 1 && sliceAngle > 0.3) {
+                    const labelRadius = (OUTER_RADIUS + INNER_RADIUS) / 2;
+                    const labelX = centerX + Math.cos(middleAngle) * labelRadius;
+                    const labelY = centerY + Math.sin(middleAngle) * labelRadius;
 
-                const textX = 125 + Math.cos(midAngle) * labelRadius;
-                const textY = 125 + Math.sin(midAngle) * labelRadius;
+                    const percentage = ((item.count / total) * 100).toFixed(1) + "%";
 
-                const percent = ((d.value / totalVisible) * 100).toFixed(1) + "%";
+                    ctx.font = "normal 10px Arial";
+                    const textWidth = ctx.measureText(percentage).width;
 
-                ctx.fillStyle = "#fff";
-                ctx.font = "bold 12px Arial";
-                ctx.textAlign = "center";
-                ctx.textBaseline = "middle";
-                ctx.fillText(percent, textX, textY);
+                    ctx.fillStyle = item.color;
+                    const paddingX = 10;
+                    const paddingY = 10;
+                    const rectWidth = textWidth + paddingX * 2;
+                    const rectHeight = 16;
+                    const borderRadius = 4;
 
-                startAngle += sliceAngle;
+
+                    const x = labelX - rectWidth / 2;
+                    const y = labelY - rectHeight / 2;
+
+                    //  Rounded rectangle
+                    ctx.beginPath();
+                    ctx.moveTo(x + borderRadius, y);
+                    ctx.lineTo(x + rectWidth - borderRadius, y);
+                    ctx.quadraticCurveTo(x + rectWidth, y, x + rectWidth, y + borderRadius);
+                    ctx.lineTo(x + rectWidth, y + rectHeight - borderRadius);
+                    ctx.quadraticCurveTo(x + rectWidth, y + rectHeight, x + rectWidth - borderRadius, y + rectHeight);
+                    ctx.lineTo(x + borderRadius, y + rectHeight);
+                    ctx.quadraticCurveTo(x, y + rectHeight, x, y + rectHeight - borderRadius);
+                    ctx.lineTo(x, y + borderRadius);
+                    ctx.quadraticCurveTo(x, y, x + borderRadius, y);
+                    ctx.closePath();
+
+                    ctx.fillStyle = item.color;
+                    ctx.fill();
+
+                    // Optional border
+                    // ctx.strokeStyle = "#fff";
+                    // ctx.lineWidth = 1;
+                    // ctx.stroke();
+
+                    //  Black background
+                    ctx.fillStyle = "rgba(0, 0, 0, 0.4)";
+                    ctx.fill();
+
+                    // Text
+                    ctx.fillStyle = "#fff";
+                    ctx.textAlign = "center";
+                    ctx.textBaseline = "middle";
+                    ctx.fillText(percentage, labelX, labelY);
+                }
+
+                currentAngle += sliceAngle;
+            });
+
+            canvas.orderData = orderData;
+            canvas.total = total;
+        }
+
+        // Legend
+        function createLegend() {
+            const breakdown = document.getElementById('breakdown');
+            breakdown.innerHTML = '';
+
+            orderData.forEach((item) => {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <div class="status-info">
+                        <div class="status-dot" style="background-color:${item.color}"></div>
+                        <span>${item.status}</span>
+                    </div>
+                    <span>${item.count} orders</span>
+                `;
+                breakdown.appendChild(li);
             });
         }
 
-        /* ==== ANIMATION ==== */
-        function animate() {
-            animationProgress += 0.03;
-            if (animationProgress > 1) animationProgress = 1;
-
-            drawChart(animationProgress);
-
-            if (animationProgress < 1) requestAnimationFrame(animate);
+        // Stats
+        function updateStats() {
+            const total = orderData.reduce((sum, item) => sum + item.count, 0);
+            document.getElementById('totalOrders').textContent = total;
         }
 
-        updateCenterText();
-        animate();
-
-        /* ==== TOOLTIP ==== */
-        canvas.addEventListener("mousemove", function (e) {
+        // Hover detection
+        function getSliceAtPosition(canvas, x, y) {
             const rect = canvas.getBoundingClientRect();
 
-            const mouseX = e.clientX - rect.left;
-            const mouseY = e.clientY - rect.top;
+            const mouseX = (x - rect.left) * (CANVAS_SIZE / rect.width);
+            const mouseY = (y - rect.top) * (CANVAS_SIZE / rect.height);
 
-            // center-based coords
-            const x = mouseX - 125;
-            const y = mouseY - 125;
+            const centerX = CANVAS_SIZE / 2;
+            const centerY = CANVAS_SIZE / 2;
 
-            // distance from center
-            const distance = Math.sqrt(x * x + y * y);
+            const dx = mouseX - centerX;
+            const dy = mouseY - centerY;
 
-            // ✅ Only inside donut ring
-            if (distance < 60 || distance > 100) {
-                tooltip.style.opacity = 0;
-                return;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+
+            if (distance >= INNER_RADIUS && distance <= OUTER_RADIUS) {
+                let angle = Math.atan2(dy, dx) + Math.PI / 2;
+                if (angle < 0) angle += 2 * Math.PI;
+
+                let currentAngle = 0;
+                const total = canvas.total;
+
+                for (let item of canvas.orderData) {
+                    const sliceAngle = (item.count / total) * 2 * Math.PI;
+                    if (angle >= currentAngle && angle < currentAngle + sliceAngle) {
+                        return item;
+                    }
+                    currentAngle += sliceAngle;
+                }
             }
 
-            // angle calc
-            let angle = Math.atan2(y, x);
-
-            // shift so 0 starts from top
-            angle = angle + Math.PI / 2;
-
-            // normalize (0 → 2PI)
-            if (angle < 0) angle += Math.PI * 2;
-
-            let found = false;
-            const totalVisible = getTotalVisible();
-
-            data.forEach(d => {
-                if (!d.visible) return;
-
-                // ✅ exact slice detection (handles edge case)
-                let isInsideSlice = false;
-
-                if (d.start < d.end) {
-                    isInsideSlice = angle >= d.start && angle <= d.end;
-                } else {
-                    isInsideSlice = angle >= d.start || angle <= d.end;
-                }
-
-                if (isInsideSlice) {
-
-                    const percent = ((d.value / totalVisible) * 100).toFixed(1);
-
-                    tooltipTitle.innerText = d.label;
-                    tooltipBody.innerHTML = `
-                        Orders: <b>${d.value}</b><br>
-                        Percentage: <b>${percent}%</b>
-                    `;
-
-                    // ✅ Keep tooltip inside canvas
-                    let left = mouseX + 10;
-                    let top = mouseY + 10;
-
-                    const tooltipWidth = tooltip.offsetWidth || 140;
-                    const tooltipHeight = tooltip.offsetHeight || 60;
-
-                    if (left + tooltipWidth > canvas.width) {
-                        left = mouseX - tooltipWidth - 10;
-                    }
-
-                    if (top + tooltipHeight > canvas.height) {
-                        top = mouseY - tooltipHeight - 10;
-                    }
-
-                    tooltip.style.left = left + "px";
-                    tooltip.style.top = top + "px";
-                    tooltip.style.opacity = 1;
-
-                    found = true;
-                }
-            });
-
-            if (!found) {
-                tooltip.style.opacity = 0;
-            }
-        });
-
-        canvas.addEventListener("mouseleave", () => {
-            tooltip.style.opacity = 0;
-        });
-
-        /* ==== LABELS ==== */
-        const labelsContainer = document.getElementById("labels");
-
-        data.forEach(d => {
-            const el = document.createElement("div");
-            el.className = "label-item";
-            el.style.background = d.color;
-            el.innerText = d.label;
-
-            labelsContainer.appendChild(el);
-        });
-
-        /* ==== BREAKDOWN STATUS LIST ==== */
-        function renderBreakdown() {
-            const list = document.getElementById("breakdown");
-            list.innerHTML = "";
-
-            data.forEach(d => {  // use full data (NOT visibleData)
-                const li = document.createElement("li");
-
-                // add classname after li
-                li.classList.add("status-item");
-                li.innerHTML = `
-                    <div class="status-left">
-                        <span class="status-dot" style="background:${d.color}"></span>
-                        <span class="status-text">${d.label}</span>
-                    </div>
-                    <div class="status-count">${d.value} orders</div>
-                `;
-
-                list.appendChild(li);
-            });
+            return null;
         }
-        renderBreakdown();
+
+        // Tooltip
+        function showTooltip(e, data) {
+            const tooltip = document.getElementById('tooltip');
+            const total = orderData.reduce((s, i) => s + i.count, 0);
+            const pct = ((data.count / total) * 100).toFixed(1);
+
+            tooltip.innerHTML = `
+                <strong>${data.status}</strong><br>
+                Orders: ${data.count}<br>
+                ${pct}%
+            `;
+
+            tooltip.style.left = e.clientX + 10 + "px";
+            tooltip.style.top = e.clientY - 10 + "px";
+            tooltip.classList.add("show");
+        }
+
+        function hideTooltip() {
+            document.getElementById('tooltip').classList.remove("show");
+        }
+
+        // Interactions
+        function setupInteractions() {
+            const canvas = document.getElementById('orderChart');
+
+            canvas.addEventListener('mousemove', (e) => {
+                const slice = getSliceAtPosition(canvas, e.clientX, e.clientY);
+
+                if (slice) {
+                    showTooltip(e, slice);
+                    canvas.style.cursor = "pointer";
+                } else {
+                    hideTooltip();
+                    canvas.style.cursor = "default";
+                }
+            });
+
+            canvas.addEventListener('mouseleave', hideTooltip);
+        }
+
+        // Colors
+        function lightenColor(color, factor) {
+            const hex = color.replace('#', '');
+            const r = parseInt(hex.substr(0, 2), 16);
+            const g = parseInt(hex.substr(2, 2), 16);
+            const b = parseInt(hex.substr(4, 2), 16);
+
+            return `rgb(${Math.floor(r + (255 - r) * factor)},
+                ${Math.floor(g + (255 - g) * factor)},
+                ${Math.floor(b + (255 - b) * factor)})`;
+        }
+
+        // Animation
+        function animateChart() {
+            animationProgress = 0;
+            const duration = 1200;
+            const start = Date.now();
+
+            function frame() {
+                const elapsed = Date.now() - start;
+                animationProgress = Math.min(elapsed / duration, 1);
+                animationProgress = 1 - Math.pow(1 - animationProgress, 3);
+
+                drawDonutChart();
+
+                if (animationProgress < 1) {
+                    requestAnimationFrame(frame);
+                } else {
+                    updateStats();
+                }
+            }
+
+            frame();
+        }
+
+
+        // Init
+        function renderChart() {
+            drawDonutChart();
+            createLegend();
+            updateStats();
+        }
+
+        // Start
+        renderChart();
+        setupInteractions();
+
     </script>
+
+    <!-- Pie chart using E-charts library JS -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const chartDom = document.getElementById('pieChartContainer');
+            const myChart = echarts.init(chartDom);
+
+            const option = {
+                title: {
+                    text: 'Pie Chart',
+                    left: 'center',
+                    textStyle: {
+                        fontSize: 30,
+                    },
+                },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: '{b}<br/>Value: {c}<br/>{d}%',
+                    textStyle: {
+                        fontSize: 14,
+                        lineHeight: 20
+                    },
+
+                    padding: [8, 12],
+                },
+                legend: {
+                    orient: 'vertical',
+                    right: '100',
+                    top: 'center',
+
+                    icon: 'roundRect',   // rounded legend box
+                    itemWidth: 14,
+                    itemHeight: 14,
+
+                    textStyle: {
+                        fontSize: 14,
+                        color: '#242424',
+                    },
+
+                    padding: [16, 16],
+                },
+                series: [
+                    {
+                        name: 'Access From',
+                        type: 'pie',
+                        radius: '50%',
+                        center: ['30%', '50%'],
+                        data: [
+                            { value: 1048, name: 'Search Engine' },
+                            { value: 735, name: 'Direct' },
+                            { value: 580, name: 'Email' },
+                            { value: 484, name: 'Union Ads' },
+                            { value: 300, name: 'Video Ads' }
+                        ],
+                        label: {
+                            show: true,
+                            formatter: '{d}%',
+                            fontSize: 12,
+                            // fontWeight: 'bold',
+                        },
+                        emphasis: {
+                            itemStyle: {
+                                shadowBlur: 10,
+                                shadowOffsetX: 0,
+                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                            }
+                        }
+                    }
+                ],
+
+                // RESPONSIVE 
+                media: [
+                    {
+                        query: { maxWidth: 992 },
+                        option: {
+                            legend: {
+                                right: '40',
+
+                                itemWidth: 12,
+                                itemHeight: 12,
+
+                                textStyle: {
+                                    fontSize: 13,
+                                },
+
+                            },
+                        },
+                    },
+                    {
+                        query: { maxWidth: 768 },
+                        option: {
+                            title: {
+                                textStyle: {
+                                    fontSize: 20,
+                                    top: 10,
+                                }
+                            },
+                            legend: {
+                                orient: 'horizontal',
+                                bottom: 0,
+                                left: 'center',
+                            },
+                            series: [
+                                {
+                                    center: ['50%', '50%'],
+                                    radius: '60%',
+                                }
+                            ]
+                        },
+                    }
+                ],
+            };
+
+            myChart.setOption(option);
+
+            // responsive
+            window.addEventListener('resize', () => {
+                myChart.resize();
+            });
+
+        });
+    </script>
+
+    <!-- Pie chart no use library JS -->
+   
 </body>
 
 </html>

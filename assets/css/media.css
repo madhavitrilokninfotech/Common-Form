@@ -1,5 +1,129 @@
 /* Add your responsive styles here */
+
+@media (max-width: 1199px) {
+
+    /* Bootstrap DateTimepicker */
+    .custom-datetime .bootstrap-datetimepicker-widget.dropdown-menu {
+        padding: 8px 6px;
+    }
+
+    .custom-datetime .bootstrap-datetimepicker-widget table th.dow {
+        padding: 6px 0 0px;
+    }
+
+    .custom-datetime .bootstrap-datetimepicker-widget table td.day {
+        font-size: 13px;
+    }
+
+    .bootstrap-datetimepicker-widget .datepicker-decades .decade {
+        font-size: 13px;
+    }
+
+    /* range date-picker */
+    .custom-datetime .bootstrap-datetimepicker-widget table td.range-start:after,
+    .custom-datetime .bootstrap-datetimepicker-widget table td.range-between:after,
+    .custom-datetime .bootstrap-datetimepicker-widget table td.range-end:after {
+        top: 3px;
+        bottom: 3px;
+    }
+
+    /* end */
+}
+
 @media (max-width: 992px) {
+
+    /* Bootstrap DateTimepicker */
+    .custom-datetime .timepicker .btn {
+        border-radius: 8px;
+    }
+
+    .custom-datetime .timepicker td.minute {
+        font-size: 14px;
+    }
+
+    .custom-datetime .bootstrap-datetimepicker-widget.dropdown-menu {
+        width: 17em;
+    }
+
+    .custom-datetime .bootstrap-datetimepicker-widget table th.dow {
+        min-width: 36px;
+    }
+
+    .custom-datetime .bootstrap-datetimepicker-widget table td.day {
+        height: 36px;
+        width: 36px;
+    }
+
+    .bootstrap-datetimepicker-widget table td span {
+        height: 30px;
+        line-height: 28px;
+    }
+
+    .bootstrap-datetimepicker-widget .datepicker-decades .decade {
+        font-size: 12px;
+        min-width: 80px;
+        padding: 6px 4px;
+    }
+
+    .custom-datetime .bootstrap-datetimepicker-widget table th.prev {
+        margin-right: 4px;
+    }
+
+    .custom-datetime .bootstrap-datetimepicker-widget table th.next {
+        margin-left: 4px;
+    }
+
+    /* range date-picker */
+    .range-date-box {
+        padding: 6px 8px;
+        border-radius: 6px;
+    }
+
+    .range-clear-btn {
+        width: 28px;
+        height: 28px;
+        margin-left: 10px;
+    }
+
+    /* end */
+    .select2-selection--multiple::after {
+        right: 14px;
+        top: 14px;
+        width: 14px;
+        height: 14px;
+    }
+
+    /* canvas chart */
+    .piechart-main {
+        padding: 40px 16px;
+    }
+
+    .order-chart-main .tooltip {
+        display: none;
+    }
+
+    .order-chart-main canvas {
+        max-width: 320px;
+        max-height: 320px;
+    }
+
+    .order-chart-main .center-value {
+        font-size: 35px;
+    }
+
+    .order-chart-main .center-label {
+        font-size: 12px;
+    }
+
+    .order-chart-main .breakdown li {
+        padding: 8px 0;
+    }
+
+    .order-chart-main .legend-title {
+        font-size: 18px;
+    }
+
+    /* end */
     .range-input {
         height: 6px;
     }
@@ -142,6 +266,74 @@
 }
 
 @media (max-width: 575px) {
+
+    /* Bootstrap DateTimepicker */
+    .custom-datetime .custom_time_pickr+.bootstrap-datetimepicker-widget.dropdown-menu {
+        width: 10em;
+    }
+
+    .custom-datetime .timepicker td.separator {
+        min-width: 2px !important;
+    }
+
+    .custom-datetime .timepicker td {
+        min-width: 40px;
+    }
+
+    .custom-datetime .timepicker .btn.btn-primary {
+        font-size: 14px;
+        margin: 0 auto;
+    }
+
+    .custom-datetime .bootstrap-datetimepicker-widget.dropdown-menu {
+        width: 16em;
+    }
+
+    .custom-datetime .bootstrap-datetimepicker-widget table th.dow {
+        min-width: 34px;
+    }
+
+    .custom-datetime .bootstrap-datetimepicker-widget table td.day {
+        height: 34px;
+        width: 34px;
+    }
+
+    .bootstrap-datetimepicker-widget .datepicker-decades .decade {
+        min-width: 76px;
+    }
+
+    /* range date-picker */
+    .range-label {
+        font-size: 10px;
+    }
+
+    .range-value {
+        font-size: 11px;
+    }
+
+    /* end */
+
+    /* canvas chart */
+    .order-chart-main canvas {
+        max-width: 300px;
+        max-height: 300px;
+    }
+
+    .order-chart-main .status-dot {
+        width: 6px;
+        height: 6px;
+    }
+
+    .order-chart-main .status-info {
+        gap: 8px;
+    }
+
+    .order-chart-main .legend-section {
+        padding: 0;
+    }
+
+    /* end */
+
 
     /* Double range slider */
     .double-range-wrap.range-slider {

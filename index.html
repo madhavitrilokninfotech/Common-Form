@@ -11,9 +11,10 @@
     <link rel="stylesheet" type="text/css" href="assets/font/font-awesome/css/font-awesome.min.css">
 
     <!-- CSS Links -->
+    <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/bootstrap-datetimepicker.min.css">
     <link rel="stylesheet" type="text/css" href="assets/css/select2.min.css">
     <link rel="stylesheet" type="text/css" href="assets/css/flatpickr.min.css">
-    <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
     <link rel="stylesheet" type="text/css" href="assets/css/media.css">
 
@@ -421,6 +422,48 @@
                         <input id="datepicker" placeholder="Select date" class="form-control border datepicker">
                     </div>
 
+                    <!-- Custom Create Date,Time Picker -->
+                    <div class="field-group">
+                        <div class="row">
+                            <div class="col-sm-6 mb-3 mb-sm-0">
+                                <div class="custom-datetime">
+                                    <label class="form-label">Select Date</label>
+                                    <input type="text" class="form-control border custom_date_pickr" id="myDatePicker"
+                                        name="myDatePicker" placeholder="Select Date">
+
+                                </div>
+                            </div>
+                            <div class="col-sm-6 mb-3 mb-sm-0">
+                                <div class="custom-datetime">
+                                    <label class="form-label">Select Time</label>
+                                    <input type="text" class="form-control border custom_time_pickr" id="myTimePicker"
+                                        name="myTimePicker" placeholder="Select Time">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Custom Create Date range Picker -->
+                    <div class="field-group">
+                        <div class="row">
+                            <div class="col-sm-6 mb-3 mb-sm-0">
+                                <div class="custom-datetime">
+                                    <label class="form-label">Select Date Range</label>
+                                    <div class="input-daterange">
+                                        <input type="text" class="form-control border custom_date_range_pickr"
+                                            id="myDateRange" name="myDateRange" placeholder="Select Date Range" >
+                                        <!-- 
+                                        <div class="input-group-addon">to</div>
+
+                                        <input type="text" class="form-control border custom_date_range_pickr"
+                                            id="myDateRange" name="myDateRange" placeholder="Select Date Range"
+                                            value="2012-04-19"> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Textarea Field -->
                     <div class="field-group">
                         <label class="form-label">Message</label>
@@ -459,9 +502,11 @@
 
     <!-- JS Script Links -->
     <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/js/select2.min.js"></script>
+    <script src="assets/js/moment.min.js"></script>
     <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/select2.min.js"></script>
     <script src="assets/js/flatpickr.js"></script>
+    <script src="assets/js/bootstrap-datetimepicker.min.js"></script>
     <script src="assets/js/custom.js" defer></script>
 
 </body>

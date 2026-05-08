@@ -330,6 +330,28 @@ input:-moz-autofill-preview {
     display: none;
 }
 
+.select2-selection--multiple::after {
+    position: absolute;
+    content: "";
+    right: 16px;
+    top: 16px;
+    width: 16px;
+    height: 16px;
+    background-image: url(../images/btnnav-icon.svg);
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background-position: center;
+    transition: transform 0.3s ease;
+}
+
+.select2-selection--multiple[aria-expanded="true"]::after {
+    transform: scaleY(-1);
+    -webkit-transform: scaleY(-1);
+    -moz-transform: scaleY(-1);
+    -ms-transform: scaleY(-1);
+    -o-transform: scaleY(-1);
+}
+
 /* WebKit (Chrome, Safari, Edge) */
 .select2-container--default .select2-results>.select2-results__options::-webkit-scrollbar {
     width: 4px;
@@ -1440,116 +1462,617 @@ span.flatpickr-weekday {
 
 /************* Donut Chart CSS *************/
 .chart-wrap {
-    padding: 10px;
-    border-radius: 16px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-    /* width: 350px; */
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     position: relative;
 }
 
-.chart-container .total-text-center {
+.order-chart-main .center-info {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
     text-align: center;
-    font-size: 16px;
-    font-weight: bold;
-    -webkit-transform: translate(-50%, -50%);
-    -moz-transform: translate(-50%, -50%);
-    -ms-transform: translate(-50%, -50%);
-    -o-transform: translate(-50%, -50%);
-}
-
-.chart-container .label-item {
-    padding: 6px 10px;
-    border-radius: 20px;
-    color: #fff;
-    font-size: 12px;
-}
-
-.chart-container .hidden {
-    opacity: 0.3;
-}
-
-.chart-container .tooltip {
-    position: absolute;
-    background: #111;
-    color: #fff;
-    padding: 12px 14px;
-    border-radius: 10px;
-    font-size: 13px;
-    opacity: 0;
     pointer-events: none;
-    min-width: 140px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-    transition: 0.2s;
-    z-index: 10;
 }
 
-.chart-container .tooltip-title {
+.order-chart-main .center-value {
+    font-size: 42px;
     font-weight: bold;
-    margin-bottom: 6px;
-    font-size: 14px;
+    color: #333;
 }
 
-.chart-container .tooltip-body {
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
-    padding-top: 6px;
+.order-chart-main .center-label {
+    font-size: 16px;
+    color: #666;
 }
 
-.chart-list-wrap {
-    margin: auto;
+.order-chart-main .legend-section {
+    padding: 20px 20px;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     height: 100%;
-    /* justify-content: center; */
-    padding: 18px 0;
 }
 
-.chart-container .labels {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding-bottom: 20px;
+.order-chart-main .legend-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 10px;
+    border-bottom: 3px solid #667eea;
+    padding-bottom: 5px;
 }
 
-.chart-container .breakdown {
+.order-chart-main .chart-list-wrap {
+    width: 100%;
+}
+
+.order-chart-main .breakdown {
+    list-style: none;
     padding: 0;
     margin: 0;
 }
 
-.chart-container li.status-item {
+.order-chart-main .breakdown li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding: 10px 0;
+    border-bottom: 1px solid #f0f0f0;
+    transition: all 0.3s;
+}
+
+.order-chart-main .breakdown li:last-child {
+    border-bottom: none;
+}
+
+.order-chart-main .breakdown li:hover {
+    background: #f8f9fa;
+    padding-left: 10px;
+}
+
+.order-chart-main .status-info {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    margin-bottom: 10px;
+    gap: 10px;
 }
 
-.chart-container li.status-item:last-child {
-    margin-bottom: 0;
-}
-
-.chart-container .status-dot {
-    display: inline-block;
-    vertical-align: middle;
+.order-chart-main .status-dot {
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    margin-right: 10px;
+    flex-shrink: 0;
 }
 
-.chart-container .status-text {
-    display: inline-block;
+.order-chart-main .status-name {
+    font-weight: 500;
+    color: #333;
     font-size: 16px;
 }
 
-.chart-container .status-count {
-    display: inline-block;
+.order-chart-main .status-count {
+    color: #999;
+    font-size: 0.95em;
+}
+
+.order-chart-main .legend-item {
+    display: none;
+}
+
+.order-chart-main .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.order-chart-main .tooltip {
+    position: fixed;
+    background: rgba(0, 0, 0, 0.95);
+    color: white;
+    padding: 14px 16px;
+    border-radius: 10px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s;
+    z-index: 1000;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+}
+
+.order-chart-main .tooltip.show {
+    opacity: 1;
+}
+
+.order-chart-main .tooltip-title {
+    font-weight: bold;
+    font-size: 1.1em;
+    margin-bottom: 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    padding-bottom: 5px;
+}
+
+.order-chart-main .tooltip-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    margin: 5px 0;
+}
+
+/* end */
+
+/************* Pie Chart CSS *************/
+.piechart-wrap {
+    width: 100%;
+    height: 400px;
+}
+
+.piechart-main {
+    padding: 40px 20px;
+}
+
+/* end */
+
+
+/************* Custom Date & Time Picker CSS *************/
+.custom-datetime .bootstrap-datetimepicker-widget.dropdown-menu {
+    margin: 4px 0;
+    padding: 8px 8px;
+    border-radius: 12px;
+    border-color: transparent;
+    box-shadow: 0 10px 14px 2px rgba(0, 0, 0, .1), 0 10px 14px 2px rgba(0, 0, 0, .1), 0 10px 14px 2px rgba(0, 0, 0, .1);
+    transform-origin: top center;
+    animation: scale-in-center 0.2s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+    -webkit-animation: scale-in-center 0.2s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+}
+
+.custom-datetime .bootstrap-datetimepicker-widget.dropdown-menu.bottom:after,
+.custom-datetime .bootstrap-datetimepicker-widget.dropdown-menu.bottom:before,
+.custom-datetime .bootstrap-datetimepicker-widget table th.next:after,
+.custom-datetime .bootstrap-datetimepicker-widget.dropdown-menu.top:before,
+.custom-datetime .bootstrap-datetimepicker-widget.dropdown-menu.top:after {
+    display: none;
+}
+
+.custom-datetime .fa.fa-chevron-right,
+.custom-datetime .fa.fa-chevron-left {
+    font-size: 12px;
+    vertical-align: middle;
+    margin-bottom: 5px;
+}
+
+.custom-datetime .fa.fa-chevron-right {
+    margin-left: 3px;
+}
+
+.custom-datetime .fa.fa-chevron-left {
+    margin-right: 3px;
+}
+
+.bootstrap-datetimepicker-widget table th {
+    transition: .2s ease;
+    -webkit-transition: .2s ease;
+    -moz-transition: .2s ease;
+    -ms-transition: .2s ease;
+    -o-transition: .2s ease;
+}
+
+.custom-datetime .bootstrap-datetimepicker-widget table th.prev,
+.custom-datetime .bootstrap-datetimepicker-widget table th.next {
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    padding: 8px;
+    display: block;
+    text-align: center;
+}
+
+.custom-datetime .bootstrap-datetimepicker-widget table th.prev {
+    margin-right: 6px;
+}
+
+.custom-datetime .bootstrap-datetimepicker-widget table th.next {
+    margin-left: 6px;
+}
+
+.custom-datetime .bootstrap-datetimepicker-widget table th.picker-switch {
     font-size: 14px;
-    color: #8c9097;
+    border-radius: 50px;
+    font-weight: 600;
+    font-family: 'SFProDisplay', sans-serif;
+    width: 100%;
+}
+
+.custom-datetime .bootstrap-datetimepicker-widget table th.dow {
+    min-width: 41px;
+}
+
+.custom-datetime .bootstrap-datetimepicker-widget table th.dow {
+    color: #8c8c8c;
+    font-weight: 300;
+    text-transform: uppercase;
+    font-size: 12px;
+    opacity: .7;
+    line-height: normal !important;
+    height: auto !important;
+    padding: 10px 0 8px;
+}
+
+.custom-datetime .bootstrap-datetimepicker-widget table td.day {
+    box-sizing: border-box;
+    height: 41px;
+    line-height: 0;
+    width: 41px;
+    font-size: 14px;
+    padding: 0;
+    border-radius: 50%;
+    transition: .2s ease;
+    -webkit-transition: .2s ease;
+    -moz-transition: .2s ease;
+    -ms-transition: .2s ease;
+    -o-transition: .2s ease;
+}
+
+.custom-datetime .bootstrap-datetimepicker-widget table td.today:before {
+    display: none;
+}
+
+.custom-datetime .bootstrap-datetimepicker-widget table td.active,
+.custom-datetime .bootstrap-datetimepicker-widget table td.active:hover,
+.custom-datetime .bootstrap-datetimepicker-widget table td span.active {
+    background: #C67C4E;
+    color: #fff;
+}
+
+.custom-datetime .bootstrap-datetimepicker-widget table td span {
+    font-size: 14px;
+    height: 36px;
+    line-height: 36px;
+    border-radius: 50px;
+    vertical-align: middle;
+}
+
+.custom-datetime .bootstrap-datetimepicker-widget .datepicker-decades .decade {
+    line-height: normal !important;
+    height: auto;
+    font-size: 14px;
+    display: inline-flex;
+    justify-content: center;
+    min-width: 90px;
+    padding: 8px 4px;
+    transition: .2s ease;
+    -webkit-transition: .2s ease;
+    -moz-transition: .2s ease;
+    -ms-transition: .2s ease;
+    -o-transition: .2s ease;
+}
+
+.custom-datetime .bootstrap-datetimepicker-widget .datepicker-decades table td,
+.custom-datetime .bootstrap-datetimepicker-widget .datepicker-months table td {
+    line-height: 40px;
+}
+
+.scale-in-center {
+    animation: scale-in-center 0.2s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+    -webkit-animation: scale-in-center 0.2s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+    transform-origin: top center;
+}
+
+.scale-out-center {
+    animation: scale-out-center 0.3s ease both;
+    -webkit-animation: scale-out-center 0.3s ease both;
+    transform-origin: top center;
+}
+
+/* Scale-in / Scale-out animation */
+@keyframes scale-animation {
+
+    0% {
+        transform: scale(0.85);
+        opacity: 0;
+    }
+
+    50% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(0.85);
+        opacity: 0;
+    }
+}
+
+@-webkit-keyframes scale-animation {
+
+    0% {
+        transform: scale(0.85);
+        opacity: 0;
+    }
+
+    50% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(0.85);
+        opacity: 0;
+    }
+}
+
+/* animation scale-in-center */
+@-webkit-keyframes scale-in-center {
+    0% {
+        opacity: 0;
+        transform: scale(0.80);
+        -webkit-transform: scale(0.80);
+        -moz-transform: scale(0.80);
+        -ms-transform: scale(0.80);
+        -o-transform: scale(0.80);
+    }
+
+    100% {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes scale-in-center {
+    0% {
+        opacity: 0;
+        transform: scale(0.80);
+        -webkit-transform: scale(0.80);
+        -moz-transform: scale(0.80);
+        -ms-transform: scale(0.80);
+        -o-transform: scale(0.80);
+    }
+
+    100% {
+        transform: scale(1);
+        -webkit-transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* animation scale-out-center */
+@keyframes scale-out-center {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(0.80);
+        -webkit-transform: scale(0.80);
+        -moz-transform: scale(0.80);
+        -ms-transform: scale(0.80);
+        -o-transform: scale(0.80);
+    }
+}
+
+@-webkit-keyframes scale-out-center {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(0.80);
+        -webkit-transform: scale(0.80);
+        -moz-transform: scale(0.80);
+        -ms-transform: scale(0.80);
+        -o-transform: scale(0.80);
+    }
+}
+
+/* TimePicker */
+.custom-datetime .custom_time_pickr+.bootstrap-datetimepicker-widget.dropdown-menu {
+    width: 14em;
+}
+
+.custom-datetime .timepicker .btn {
+    min-width: auto;
+    border-radius: 10px;
+    background: transparent;
+    color: #000;
+    border: none;
+    transition: .2s ease;
+    -webkit-transition: .2s ease;
+    -moz-transition: .2s ease;
+    -ms-transition: .2s ease;
+    -o-transition: .2s ease;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+}
+
+.custom-datetime .timepicker .btn:hover {
+    background-color: #C67C4E !important;
+    color: #fff !important;
+}
+
+.custom-datetime .timepicker .btn.btn-primary {
+    width: 100%;
+    text-align: center;
+    line-height: normal;
+}
+
+.custom-datetime .timepicker td {
+    height: auto;
+    line-height: normal;
+    width: auto;
+}
+
+.custom-datetime .timepicker td.minute {
+    height: 30px;
+    line-height: 0;
+    width: 30px;
+}
+
+.custom-datetime .bootstrap-datetimepicker-widget .timepicker table td span {
+    height: auto;
+    line-height: 1;
+    font-weight: 400;
+    border-radius: 50px;
+    vertical-align: middle;
+    margin: 2px 2px 4px;
+    width: 30px;
+    text-align: center;
+}
+
+.custom-datetime .bootstrap-datetimepicker-widget .timepicker table td span:hover {
+    background: transparent;
+}
+
+/* Range Header Styles */
+.range-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 6px;
+    background: #f8f8f8;
+    border-radius: 10px;
+    margin-bottom: 6px;
+    gap: 6px;
+    position: relative;
+}
+
+.range-date-box {
+    flex: 1;
+    background: #e5e5e5;
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    transition: all .5s cubic-bezier(0.22, 1, 0.36, 1);
+    -webkit-transition: all .5s cubic-bezier(0.22, 1, 0.36, 1);
+    -moz-transition: all .5s cubic-bezier(0.22, 1, 0.36, 1);
+    -ms-transition: all .5s cubic-bezier(0.22, 1, 0.36, 1);
+    -o-transition: all .5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.range-date-box:hover {
+    background: #d8d8d8;
+}
+
+.range-date-box.active {
+    background: #fff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+.range-label {
+    font-size: 11px;
+    color: #000;
+    font-weight: 600;
+    margin-bottom: 3px;
+    text-transform: capitalize;
+    letter-spacing: 0.3px;
+}
+
+.range-value {
+    font-size: 12px;
+    font-weight: 400;
+    color: #999;
+    letter-spacing: 0.1px;
+}
+
+.range-date-box.active .range-label {
+    color: #000;
+    font-weight: 900;
+}
+
+.range-date-box.active .range-value {
+    color: #000;
+}
+
+.range-date-box .range-value:not(:contains('Please')) {
+    color: #000 !important;
+}
+
+.range-clear-btn {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: none;
+    background: #ddd;
+    color: #666;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+    padding: 0;
+}
+
+.range-clear-btn:hover {
+    background: #ccc;
+    color: #333;
+}
+
+.range-clear-btn i {
+    font-size: 12px;
+}
+
+/* Range selection styles */
+.custom-datetime .bootstrap-datetimepicker-widget table td.range-start,
+.custom-datetime .bootstrap-datetimepicker-widget table td.range-end {
+    background: #C67C4E;
+    color: #fff;
+    position: relative;
+}
+
+.custom-datetime .bootstrap-datetimepicker-widget table td.range-between {
+    color: #c67c4e !important;
+    font-weight: 500;
+    position: relative;
+}
+
+.custom-datetime .bootstrap-datetimepicker-widget table td.range-start:after {
+    border-top-left-radius: 50px;
+    border-bottom-left-radius: 50px;
+}
+
+.custom-datetime .bootstrap-datetimepicker-widget table td.range-end:after {
+    border-top-right-radius: 50px;
+    border-bottom-right-radius: 50px;
+}
+
+.custom-datetime .bootstrap-datetimepicker-widget table td.range-start:after,
+.custom-datetime .bootstrap-datetimepicker-widget table td.range-between:after,
+.custom-datetime .bootstrap-datetimepicker-widget table td.range-end:after {
+    position: absolute;
+    content: "";
+    box-sizing: border-box;
+    left: 0;
+    right: 0;
+    top: 5px;
+    bottom: 5px;
+    z-index: 0;
+    background: rgba(196, 122, 74, 0.2) !important;
+    color: #c67c4e !important;
+    width: 100%;
+}
+
+.scale-in-center {
+    animation: scale-in-center 0.2s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+    -webkit-animation: scale-in-center 0.2s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+    transform-origin: top center;
+}
+
+.scale-out-center {
+    animation: scale-out-center 0.3s ease both;
+    -webkit-animation: scale-out-center 0.3s ease both;
+    transform-origin: top center;
 }
 
 /* end */

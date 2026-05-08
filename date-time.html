@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Common Input Form</title>
+
+    <!-- FONT Family -->
+    <link rel="stylesheet" type="text/css" href="assets/font/font-family/stylesheet.css">
+    <link rel="stylesheet" type="text/css" href="assets/font/font-awesome/css/font-awesome.min.css">
+
+    <!-- CSS Links -->
+    <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/select2.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/media.css">
+
+</head>
+
+<body>
+    <!-- Form -->
+    <div class="form-container">
+        <div class="form-wrapper">
+            <div class="form-header">
+                <h1 class="form-title mb-0">Common Input Form</h1>
+            </div>
+            <div class="form-body">
+                <form action="" id="RegistrationForm" class="form">
+                    <!-- Custom Create Date,Time Picker -->
+                    <div class="field-group">
+                        <div class="row">
+                            <div class="col-sm-6 col-lg-5 mb-3 mb-sm-0">
+                                <div class="custom-datetime">
+                                    <label class="form-label">Select Date</label>
+                                    <input type="text" class="form-control border" id="myDatePicker" name="myDatePicker"
+                                        placeholder="Select Date">
+
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-lg-5 mb-3 mb-sm-0">
+                                <div class="custom-datetime">
+                                    <label class="form-label">Select Time</label>
+                                    <input type="text" class="form-control border timepicker" id="myTimePicker"
+                                        name="myTimePicker" placeholder="Select Time">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- end -->
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- JS Script Links -->
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/moment.min.js"></script>
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/select2.min.js"></script>
+    <script src="assets/js/bootstrap-datetimepicker.min.js"></script>
+    <!-- <script src="assets/js/custom.js" defer></script> -->
+    <script>
+        //***********  Custom Date & Time Picker JS  ***********//
+        $(function () {
+            $('#myDatePicker').datetimepicker({
+                format: "DD-MM-YYYY",
+                // autoclose: true,
+                // todayHighlight: true
+            });
+
+            // $('.timepicker').datetimepicker({
+            //     timeFormat: 'H:i',
+            //     step: 15
+            // });
+        });
+    </script>
+
+</body>
+
+</html>

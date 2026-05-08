@@ -438,3 +438,496 @@ radios.forEach(radio => {
         console.log('Selected:', this.value);
     });
 });
+
+
+//***********  Custom Date & Time Picker JS  ***********//
+$(function () {
+    const $picker = $('#myDatePicker');
+    let isAnimating = false;
+
+    $picker.datetimepicker({
+        format: "DD-MM-YYYY",
+        // debug: true,
+        icons: {
+            previous: 'fa fa-chevron-left',
+            next: 'fa fa-chevron-right'
+        }
+    });
+
+    // const pickerObj = $picker.data("DateTimePicker");
+    // console.log(pickerObj);
+
+    // pickerObj.show();
+
+    // OPEN ANIMATION
+    $picker.on('dp.show', function () {
+        setTimeout(() => {
+            $('.bootstrap-datetimepicker-widget table td, .bootstrap-datetimepicker-widget table td')
+                .removeClass('scale-out-center')
+                .addClass('scale-in-center');
+        }, 10);
+    });
+
+    $picker.on('dp.update', function () {
+        $('.bootstrap-datetimepicker-widget table td, .bootstrap-datetimepicker-widget table td')
+            .removeClass('scale-out-center')
+            .addClass('scale-in-center');
+    });
+
+
+    // CLOSE ANIMATION
+    $picker.on('dp.hide', function (e) {
+        if (isAnimating) return;
+
+        e.preventDefault();
+        isAnimating = true;
+        const $cells = $('.bootstrap-datetimepicker-widget table td, .bootstrap-datetimepicker-widget table td');
+        $cells
+            .removeClass('scale-in-center')
+            .addClass('scale-out-center');
+
+        // Wait for animation to complete
+        setTimeout(() => {
+            $cells.removeClass('scale-out-center');
+            isAnimating = false;
+            // pickerObj.hide();
+        }, 300);
+    });
+
+    // Animate when switching between date/month/year views
+    let previousView = 'days';
+    $picker.on('dp.update', function (e) {
+        const widget = $('.bootstrap-datetimepicker-widget');
+        let currentView = 'days';
+
+        if (widget.find('.datepicker-months').is(':visible')) {
+            currentView = 'months';
+        } else if (widget.find('.datepicker-years').is(':visible')) {
+            currentView = 'years';
+        } else if (widget.find('.datepicker-decades').is(':visible')) {
+            currentView = 'decades';
+        }
+
+        if (currentView !== previousView) {
+            $('.bootstrap-datetimepicker-widget table td, .bootstrap-datetimepicker-widget table td')
+                .removeClass('scale-out-center')
+                .addClass('scale-in-center');
+            previousView = currentView;
+        }
+    });
+
+    //************* TimePicker **************/
+    const $Timepicker = $('#myTimePicker');
+    $Timepicker.datetimepicker({
+        format: 'hh:mm A',
+        // debug: true,
+        icons: {
+            up: 'fa fa-chevron-up',
+            down: 'fa fa-chevron-down'
+        }
+    });
+
+    // const TimepickerObj = $Timepicker.data("DateTimePicker");
+    // console.log(TimepickerObj);
+
+    // TimepickerObj.show();
+});
+
+
+//************* Date Range Picker **************/   
+$(function () {
+    const $rangePicker = $('#myDateRange');
+    let isAnimating = false;
+    let startDate = null;
+    let endDate = null;
+    let selectingType = 'start'; // 'start' or 'end'
+
+    $rangePicker.datetimepicker({
+        format: "DD/MM/YYYY",
+        debug: true,
+        useCurrent: false,
+        keepOpen: true,
+        icons: {
+            previous: 'fa fa-chevron-left',
+            next: 'fa fa-chevron-right'
+        }
+    });
+
+    const rangePickerObj = $rangePicker.data("DateTimePicker");
+    console.log(rangePickerObj);
+    rangePickerObj.show();
+
+
+    // =========================
+    // INPUT CLICK
+    // =========================
+
+    $rangePicker.on('click', function () {
+        rangePickerObj.show();
+    });
+
+    // Add custom range header after picker opens
+    $rangePicker.on('dp.show', function () {
+
+        const $widget = $('.bootstrap-datetimepicker-widget');
+
+        // remove old header
+        $widget.find('.range-header').remove();
+
+        // append header
+        const headerHTML = `
+            <div class="range-header">
+
+                <button class="range-date-box ${selectingType === 'start' ? 'active' : ''}" id="startDateBox" type="button">
+
+                    <div class="range-label">Start</div>
+
+                    <div class="range-value" id="startDateDisplay">
+                        ${startDate ? startDate.format('DD/MM/YYYY') : 'Please select'}
+                    </div>
+
+                </button>
+
+
+                <button class="range-date-box ${selectingType === 'end' ? 'active' : ''}" id="endDateBox" type="button">
+
+                    <div class="range-label">End</div>
+
+                    <div class="range-value" id="endDateDisplay">
+                        ${endDate ? endDate.format('DD/MM/YYYY') : 'Please select'}
+                    </div>
+
+                </button>
+
+
+                <button class="range-clear-btn" id="clearRangeBtn" type="button">
+                    <i class="fa fa-times"></i>
+                </button>
+
+            </div>
+        `;
+
+        $widget.find('.datepicker').prepend(headerHTML);
+
+        // start click
+        $('#startDateBox').on('click', function (e) {
+            e.stopPropagation();
+            selectingType = 'start';
+            updateRangeHeader();
+        });
+
+        // end click
+        $('#endDateBox').on('click', function (e) {
+            e.stopPropagation();
+            selectingType = 'end';
+            updateRangeHeader();
+        });
+
+
+        // clear
+        $('#clearRangeBtn').on('click', function (e) {
+
+            e.preventDefault();
+            e.stopPropagation();
+
+            startDate = null;
+            endDate = null;
+
+            selectingType = 'start';
+
+            $rangePicker.val('');
+
+            updateRangeHeader();
+            highlightRange();
+
+        });
+
+
+        // animation
+        setTimeout(() => {
+            $('.bootstrap-datetimepicker-widget table td')
+                .removeClass('scale-out-center')
+                .addClass('scale-in-center');
+
+            highlightRange();
+        }, 10);
+
+    });
+
+
+    // =========================
+    // DATE SELECT
+    // =========================
+
+    $rangePicker.on('dp.change', function (e) {
+        const widget = $('.bootstrap-datetimepicker-widget');
+        const $activeDay = widget.find('td.day.active');
+
+        if (!$activeDay.length) return;
+
+        const selectedDay = parseInt($activeDay.text());
+
+        const monthYear = widget.find('.picker-switch').first().text();
+
+        const selectedDate = moment(
+            `${selectedDay} ${monthYear}`,
+            'D MMMM YYYY'
+        );
+
+
+        // =========================
+        // START DATE
+        // =========================
+        if (selectingType === 'start') {
+
+            startDate = selectedDate.clone();
+
+            if (endDate && endDate.isBefore(startDate)) {
+                endDate = null;
+            }
+
+            selectingType = 'end';
+
+            // prevent closing
+            preventPickerHide = true;
+
+            updateRangeHeader();
+            setTimeout(() => {
+                highlightRange();
+
+            }, 10);
+
+        }
+
+        // =========================
+        // END DATE
+        // =========================
+
+        else {
+
+            endDate = selectedDate.clone();
+            if (startDate && endDate.isBefore(startDate)) {
+
+                const temp = startDate.clone();
+                startDate = endDate.clone();
+                endDate = temp;
+            }
+
+            // input value
+            $rangePicker.val(
+                startDate.format('DD/MM/YYYY') +
+                ' - ' +
+                endDate.format('DD/MM/YYYY')
+            );
+
+            updateRangeHeader();
+            highlightRange();
+
+            // close after end select
+            setTimeout(() => {
+                rangePickerObj.hide();
+            }, 250);
+        }
+
+
+        // single start value
+        if (startDate && !endDate) {
+            $rangePicker.val(
+                startDate.format('DD/MM/YYYY')
+            );
+        }
+    });
+
+
+    // =========================
+    // UPDATE HEADER
+    // =========================
+
+    function updateRangeHeader() {
+
+        const $startBox = $('#startDateBox');
+        const $endBox = $('#endDateBox');
+
+        // start
+        if (startDate) {
+            $('#startDateDisplay')
+                .text(startDate.format('DD/MM/YYYY'))
+                .css('color', '#000');
+        }
+
+        else {
+            $('#startDateDisplay')
+                .text('Please select')
+                .css('color', '#999');
+        }
+
+
+        // end
+        if (endDate) {
+            $('#endDateDisplay')
+                .text(endDate.format('DD/MM/YYYY'))
+                .css('color', '#000');
+        }
+
+        else {
+            $('#endDateDisplay')
+                .text('Please select')
+                .css('color', '#999');
+        }
+
+        $startBox.toggleClass(
+            'active',
+            selectingType === 'start'
+        );
+
+        $endBox.toggleClass(
+            'active',
+            selectingType === 'end'
+        );
+    }
+
+
+    // =========================
+    // RANGE HIGHLIGHT
+    // =========================
+
+    function highlightRange() {
+
+        $('.bootstrap-datetimepicker-widget table td.day')
+            .removeClass(
+                'range-start range-end range-between'
+            );
+
+
+        if (!startDate && !endDate) return;
+
+
+        $('.bootstrap-datetimepicker-widget table td.day').each(function () {
+
+            let $td = $(this);
+
+            const day = parseInt($td.text());
+            const widget = $('.bootstrap-datetimepicker-widget');
+            const monthYear = widget.find('.picker-switch').first().text();
+            const visibleMonth = moment(monthYear, 'MMMM YYYY');
+
+            let currentDate;
+
+            // let currentDate = moment(
+            //     `${day} ${monthYear}`,
+            //     'D MMMM YYYY'
+            // );
+
+            // PREVIOUS MONTH DATES
+            if ($td.hasClass('old')) {
+                currentDate = visibleMonth
+                    .clone()
+                    .subtract(1, 'month')
+                    .date(day);
+            }
+
+            // NEXT MONTH DATES
+            else if ($td.hasClass('new')) {
+                currentDate = visibleMonth
+                    .clone()
+                    .add(1, 'month')
+                    .date(day);
+            }
+
+            // CURRENT MONTH DATES
+            else {
+                currentDate = visibleMonth
+                    .clone()
+                    .date(day);
+            }
+
+            // START DATE
+            if (
+                startDate &&
+                currentDate.isSame(startDate, 'day')
+            ) {
+                $td.addClass('range-start');
+            }
+
+
+            // END DATE
+            if (
+                endDate &&
+                currentDate.isSame(endDate, 'day')
+            ) {
+                $td.addClass('range-end');
+            }
+
+            // RANGE BETWEEN
+            if (
+                startDate &&
+                endDate &&
+                currentDate.isAfter(startDate, 'day') &&
+                currentDate.isBefore(endDate, 'day')
+            ) {
+
+                $td.addClass('range-between');
+
+            }
+        });
+        // remove lass first td
+        $('.range-between').removeClass('range-between-first');
+
+        // add lass first td
+        $('.range-between').first().addClass('range-between-first');
+
+        // remove class last td
+        $('.range-between').removeClass('range-between-last');
+
+        // add class last td
+        $('.range-between').last().addClass('range-between-last');
+    }
+
+    // =========================
+    // UPDATE
+    // =========================
+
+    $rangePicker.on('dp.update', function () {
+        setTimeout(() => {
+            highlightRange();
+        }, 50);
+    });
+
+
+    // =========================
+    // CLOSE ANIMATION
+    // =========================
+
+    $rangePicker.on('dp.hide', function (e) {
+        // KEEP OPEN AFTER START DATE
+        if (preventPickerHide) {
+
+            e.preventDefault();
+            preventPickerHide = false;
+            return false;
+        }
+        if (isAnimating) return;
+
+        e.preventDefault();
+        isAnimating = true;
+
+        const $widget = $('.bootstrap-datetimepicker-widget.dropdown-menu');
+        const $cells = $('.bootstrap-datetimepicker-widget table td');
+
+
+        $widget
+            .removeClass('scale-in-center')
+            .addClass('scale-out-center');
+
+        $cells
+            .removeClass('scale-in-center')
+            .addClass('scale-out-center');
+
+        $widget.removeClass('scale-out-center');
+        $cells.removeClass('scale-out-center');
+        isAnimating = false;
+
+        rangePickerObj.hide();
+
+    });
+});
