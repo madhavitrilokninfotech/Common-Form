@@ -547,7 +547,7 @@ $(function () {
 
     $rangePicker.datetimepicker({
         format: "DD/MM/YYYY",
-        debug: true,
+        // debug: true,
         useCurrent: false,
         ignoreReadonly: true,
         keepOpen: true,
@@ -559,8 +559,8 @@ $(function () {
     });
 
     const rangePickerObj = $rangePicker.data("DateTimePicker");
-    console.log(rangePickerObj);
-    rangePickerObj.show();
+    // console.log(rangePickerObj);
+    // rangePickerObj.show();
 
     // =========================
     // MOBILE KEYBOARD OFF
