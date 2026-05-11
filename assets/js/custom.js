@@ -534,20 +534,24 @@ $(function () {
 });
 
 
-//************* Date Range Picker **************/   
+//************* Date Range Picker JS **************/   
 $(function () {
     const $rangePicker = $('#myDateRange');
     let isAnimating = false;
+    let preventPickerHide = false;
+
     let startDate = null;
     let endDate = null;
+
     let selectingType = 'start'; // 'start' or 'end'
 
     $rangePicker.datetimepicker({
         format: "DD/MM/YYYY",
-        // debug: true,
+        debug: true,
         useCurrent: false,
         ignoreReadonly: true,
         keepOpen: true,
+        keepInvalid: true,
         icons: {
             previous: 'fa fa-chevron-left',
             next: 'fa fa-chevron-right'
@@ -555,85 +559,187 @@ $(function () {
     });
 
     const rangePickerObj = $rangePicker.data("DateTimePicker");
-    // console.log(rangePickerObj);
-    // rangePickerObj.show();
+    console.log(rangePickerObj);
+    rangePickerObj.show();
 
-    // Mobile Click
-    if (window.innerWidth < 768) {
-        $rangePicker.on('touchstart', function () {
-            // hide mobile keyboard
-            document.activeElement.blur();
-        });
+    // =========================
+    // MOBILE KEYBOARD OFF
+    // 
+    // if (window.innerWidth < 768) {
+    //     $rangePicker.on('touchstart', function () {
+    //         // hide mobile keyboard
+    //         document.activeElement.blur();
+    //     });
+    // }
+
+
+    // =========================
+    // UPDATE INPUT VALUE
+    // =========================
+    function updateInputValue() {
+
+        // BOTH DATES
+        if (startDate && endDate) {
+
+            $rangePicker.val(
+                startDate.format('DD/MM/YYYY') +
+                ' - ' +
+                endDate.format('DD/MM/YYYY')
+            );
+        }
+
+        // ONLY START
+        else if (startDate) {
+
+            $rangePicker.val(
+                startDate.format('DD/MM/YYYY')
+            );
+        }
+
+        // EMPTY
+        else {
+
+            $rangePicker.val('');
+        }
     }
 
 
     // =========================
     // INPUT CLICK
     // =========================
+    $rangePicker.on('click', function (e) {
+        e.preventDefault();
+        const currentValue = $rangePicker.val();
+        // if both dates exist
+        if (startDate && endDate) {
 
-    $rangePicker.on('click', function () {
+            selectingType = 'start';
+        }
+
+        // only start exists
+        else if (startDate && !endDate) {
+
+            selectingType = 'end';
+        }
+
+        // nothing selected
+        else {
+
+            selectingType = 'start';
+        }
+
+        $rangePicker.val(currentValue);
         rangePickerObj.show();
+        setTimeout(() => {
+
+            updateRangeHeader();
+            highlightRange();
+
+        }, 10);
     });
 
-    // Add custom range header after picker opens
-    $rangePicker.on('dp.show', function () {
 
+    // =========================
+    // PICKER SHOW
+    // =========================
+    $rangePicker.on('dp.show', function () {
         const $widget = $('.bootstrap-datetimepicker-widget');
 
         // remove old header
         $widget.find('.range-header').remove();
 
-        // append header
+
+        // =========================
+        // HEADER HTML
+        // =========================
         const headerHTML = `
-                <div class="range-header">
+            <div class="range-header">
+                <button 
+                    class="range-date-box ${selectingType === 'start' ? 'active' : ''}" 
+                    id="startDateBox" 
+                    type="button"
+                >
 
-                    <button class="range-date-box ${selectingType === 'start' ? 'active' : ''}" id="startDateBox" type="button">
+                    <div class="range-label">
+                        Start
+                    </div>
 
-                        <div class="range-label">Start</div>
+                    <div class="range-value" id="startDateDisplay">
+                        ${startDate ? startDate.format('DD/MM/YYYY') : 'Please select'}
+                    </div>
 
-                        <div class="range-value" id="startDateDisplay">
-                            ${startDate ? startDate.format('DD/MM/YYYY') : 'Please select'}
-                        </div>
-
-                    </button>
-
-
-                    <button class="range-date-box ${selectingType === 'end' ? 'active' : ''}" id="endDateBox" type="button">
-
-                        <div class="range-label">End</div>
-
-                        <div class="range-value" id="endDateDisplay">
-                            ${endDate ? endDate.format('DD/MM/YYYY') : 'Please select'}
-                        </div>
-
-                    </button>
+                </button>
 
 
-                    <button class="range-clear-btn" id="clearRangeBtn" type="button">
-                        <i class="fa fa-times"></i>
-                    </button>
+                <button 
+                    class="range-date-box ${selectingType === 'end' ? 'active' : ''}" 
+                    id="endDateBox" 
+                    type="button"
+                >
 
-                </div>
-            `;
+                    <div class="range-label">
+                        End
+                    </div>
+
+                    <div class="range-value" id="endDateDisplay">
+                        ${endDate ? endDate.format('DD/MM/YYYY') : 'Please select'}
+                    </div>
+
+                </button>
+
+
+                <button 
+                    class="range-clear-btn" 
+                    id="clearRangeBtn" 
+                    type="button"
+                >
+                    <i class="fa fa-times"></i>
+                </button>
+
+            </div>
+        `;
 
         $widget.find('.datepicker').prepend(headerHTML);
 
-        // start click
+
+        // =========================
+        // START CLICK
+        // =========================
+
+
+        // =========================
+        // START CLICK
+        // =========================
         $('#startDateBox').on('click', function (e) {
+
             e.stopPropagation();
+
             selectingType = 'start';
+
             updateRangeHeader();
+            highlightRange();
         });
 
-        // end click
-        $('#endDateBox').on('click', function (e) {
+
+        // =========================
+        // END CLICK
+        // =========================
+
+        $('#endDat  eBox').on('click', function (e) {
+
             e.stopPropagation();
+
             selectingType = 'end';
+
             updateRangeHeader();
+            highlightRange();
         });
 
 
-        // clear
+        // =========================
+        // CLEAR BUTTON
+        // =========================
+
         $('#clearRangeBtn').on('click', function (e) {
 
             e.preventDefault();
@@ -641,42 +747,46 @@ $(function () {
 
             startDate = null;
             endDate = null;
-
             selectingType = 'start';
 
-            $rangePicker.val('');
-
+            updateInputValue();
             updateRangeHeader();
             highlightRange();
-
         });
 
 
-        // animation
+        // =========================
+        // ANIMATION
+        // =========================
+
         setTimeout(() => {
+
             $('.bootstrap-datetimepicker-widget table td')
                 .removeClass('scale-out-center')
                 .addClass('scale-in-center');
-
             highlightRange();
-        }, 10);
 
+        }, 10);
     });
 
 
     // =========================
-    // DATE SELECT
+    // DATE CHANGE
     // =========================
+    $rangePicker.on('dp.change', function () {
 
-    $rangePicker.on('dp.change', function (e) {
         const widget = $('.bootstrap-datetimepicker-widget');
+
         const $activeDay = widget.find('td.day.active');
 
         if (!$activeDay.length) return;
 
+
         const selectedDay = parseInt($activeDay.text());
 
-        const monthYear = widget.find('.picker-switch').first().text();
+        const monthYear = widget.find('.picker-switch')
+            .first()
+            .text();
 
         const selectedDate = moment(
             `${selectedDay} ${monthYear}`,
@@ -687,26 +797,33 @@ $(function () {
         // =========================
         // START DATE
         // =========================
+
         if (selectingType === 'start') {
 
             startDate = selectedDate.clone();
 
+            // swap if needed
             if (endDate && endDate.isBefore(startDate)) {
-                endDate = null;
+
+                const temp = startDate.clone();
+
+                startDate = endDate.clone();
+                endDate = temp;
             }
 
             selectingType = 'end';
 
-            // prevent closing
+            // keep picker open
             preventPickerHide = true;
-
+            updateInputValue();
             updateRangeHeader();
             setTimeout(() => {
+
                 highlightRange();
 
             }, 10);
-
         }
+
 
         // =========================
         // END DATE
@@ -715,35 +832,33 @@ $(function () {
         else {
 
             endDate = selectedDate.clone();
+            // swap if needed
             if (startDate && endDate.isBefore(startDate)) {
 
                 const temp = startDate.clone();
+
                 startDate = endDate.clone();
                 endDate = temp;
             }
 
-            // input value
-            $rangePicker.val(
-                startDate.format('DD/MM/YYYY') +
-                ' - ' +
-                endDate.format('DD/MM/YYYY')
-            );
-
+            updateInputValue();
             updateRangeHeader();
             highlightRange();
 
-            // close after end select
+            // close picker
             setTimeout(() => {
+                // save final value
+                const finalValue = startDate.format('DD/MM/YYYY') + ' - ' + endDate.format('DD/MM/YYYY');
+
+                // hide picker
                 rangePickerObj.hide();
+
+                // Force restore value after hide
+                setTimeout(() => {
+                    $rangePicker.val(finalValue);
+                }, 0);
+
             }, 250);
-        }
-
-
-        // single start value
-        if (startDate && !endDate) {
-            $rangePicker.val(
-                startDate.format('DD/MM/YYYY')
-            );
         }
     });
 
@@ -751,39 +866,44 @@ $(function () {
     // =========================
     // UPDATE HEADER
     // =========================
-
     function updateRangeHeader() {
 
         const $startBox = $('#startDateBox');
         const $endBox = $('#endDateBox');
 
-        // start
+
+        // START
         if (startDate) {
+
             $('#startDateDisplay')
                 .text(startDate.format('DD/MM/YYYY'))
                 .css('color', '#000');
         }
 
         else {
+
             $('#startDateDisplay')
                 .text('Please select')
                 .css('color', '#999');
         }
 
-
-        // end
+        // END
         if (endDate) {
+
             $('#endDateDisplay')
                 .text(endDate.format('DD/MM/YYYY'))
                 .css('color', '#000');
         }
 
         else {
+
             $('#endDateDisplay')
                 .text('Please select')
                 .css('color', '#999');
         }
 
+
+        // ACTIVE STATE
         $startBox.toggleClass(
             'active',
             selectingType === 'start'
@@ -799,35 +919,31 @@ $(function () {
     // =========================
     // RANGE HIGHLIGHT
     // =========================
-
     function highlightRange() {
 
         $('.bootstrap-datetimepicker-widget table td.day')
             .removeClass(
-                'range-start range-end range-between'
+                'range-start range-end range-between range-between-first range-between-last'
             );
 
 
         if (!startDate && !endDate) return;
 
-
         $('.bootstrap-datetimepicker-widget table td.day').each(function () {
 
             let $td = $(this);
-
             const day = parseInt($td.text());
             const widget = $('.bootstrap-datetimepicker-widget');
-            const monthYear = widget.find('.picker-switch').first().text();
-            const visibleMonth = moment(monthYear, 'MMMM YYYY');
 
+            const monthYear = widget.find('.picker-switch')
+                .first()
+                .text();
+
+            const visibleMonth = moment(monthYear, 'MMMM YYYY');
             let currentDate;
 
-            // let currentDate = moment(
-            //     `${day} ${monthYear}`,
-            //     'D MMMM YYYY'
-            // );
 
-            // PREVIOUS MONTH DATES
+            // PREVIOUS MONTH
             if ($td.hasClass('old')) {
                 currentDate = visibleMonth
                     .clone()
@@ -835,7 +951,7 @@ $(function () {
                     .date(day);
             }
 
-            // NEXT MONTH DATES
+            // NEXT MONTH
             else if ($td.hasClass('new')) {
                 currentDate = visibleMonth
                     .clone()
@@ -843,18 +959,20 @@ $(function () {
                     .date(day);
             }
 
-            // CURRENT MONTH DATES
+            // CURRENT MONTH
             else {
                 currentDate = visibleMonth
                     .clone()
                     .date(day);
             }
 
+
             // START DATE
             if (
                 startDate &&
                 currentDate.isSame(startDate, 'day')
             ) {
+
                 $td.addClass('range-start');
             }
 
@@ -864,10 +982,12 @@ $(function () {
                 endDate &&
                 currentDate.isSame(endDate, 'day')
             ) {
+
                 $td.addClass('range-end');
             }
 
-            // RANGE BETWEEN
+
+            // BETWEEN RANGE
             if (
                 startDate &&
                 endDate &&
@@ -876,51 +996,54 @@ $(function () {
             ) {
 
                 $td.addClass('range-between');
-
             }
         });
-        // remove lass first td
-        $('.range-between').removeClass('range-between-first');
 
-        // add lass first td
-        $('.range-between').first().addClass('range-between-first');
 
-        // remove class last td
-        $('.range-between').removeClass('range-between-last');
+        // FIRST BETWEEN
+        $('.range-between')
+            .first()
+            .addClass('range-between-first');
 
-        // add class last td
-        $('.range-between').last().addClass('range-between-last');
+
+        // LAST BETWEEN
+        $('.range-between')
+            .last()
+            .addClass('range-between-last');
     }
+
 
     // =========================
     // UPDATE
     // =========================
-
     $rangePicker.on('dp.update', function () {
+
         setTimeout(() => {
             highlightRange();
+
         }, 50);
     });
 
 
     // =========================
-    // CLOSE ANIMATION
+    // HIDE
     // =========================
-
     $rangePicker.on('dp.hide', function (e) {
-        // KEEP OPEN AFTER START DATE
+        // keep open after start
         if (preventPickerHide) {
 
             e.preventDefault();
             preventPickerHide = false;
-            return false;
-        }
-        if (isAnimating) return;
 
-        e.preventDefault();
+            // Immediately restore value
+            updateInputValue();
+        }
+
+        if (isAnimating) return;
         isAnimating = true;
 
         const $widget = $('.bootstrap-datetimepicker-widget.dropdown-menu');
+
         const $cells = $('.bootstrap-datetimepicker-widget table td');
 
 
@@ -932,11 +1055,9 @@ $(function () {
             .removeClass('scale-in-center')
             .addClass('scale-out-center');
 
-        $widget.removeClass('scale-out-center');
-        $cells.removeClass('scale-out-center');
-        isAnimating = false;
-
-        rangePickerObj.hide();
-
+        setTimeout(() => {
+            isAnimating = false;
+            updateInputValue();
+        }, 200);
     });
 });

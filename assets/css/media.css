@@ -236,7 +236,8 @@
         padding: 15px 20px;
     }
 
-    .form-control.border.datepicker {
+    .form-control.border.datepicker-icon,
+    .form-control.border.time-icon {
         background-size: 15px;
         background-position: right 14px center;
         padding-right: 35px;
@@ -364,6 +365,10 @@
         border-radius: 10px;
     }
 
+    .price-label {
+        font-size: 11px;
+    }
+
     /* end */
     /* single range slider */
     .total-value {
@@ -396,16 +401,6 @@
 
     .range-slider {
         width: 100%;
-    }
-
-    .range-input::-moz-range-thumb {
-        height: 14px;
-        width: 14px;
-    }
-
-    .range-input::-webkit-slider-thumb {
-        height: 14px;
-        width: 14px;
     }
 
     /* end */

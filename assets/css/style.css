@@ -1114,7 +1114,7 @@ span.flatpickr-weekday {
     font-size: 13px;
 }
 
-.form-control.border.datepicker {
+.form-control.border.datepicker-icon {
     background-image: url(../images/calender-icon.svg);
     background-size: 18px;
     background-repeat: no-repeat;
@@ -1122,6 +1122,13 @@ span.flatpickr-weekday {
     padding-right: 38px;
 }
 
+.form-control.border.time-icon {
+    background-image: url(../images/time.svg);
+    background-size: 18px;
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    padding-right: 38px;
+}
 
 /* end */
 
@@ -1251,6 +1258,17 @@ span.flatpickr-weekday {
 
 .val-badge {
     display: inline-block;
+}
+
+.price-label {
+    display: inline-block;
+}
+
+.price-labels {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
 }
 
 /* Hide the number input spin arrows */
@@ -1701,6 +1719,10 @@ span.flatpickr-weekday {
     padding: 10px 0 8px;
 }
 
+.custom-datetime .bootstrap-datetimepicker-widget table td.today {
+    color: #c67c4e;
+}
+
 .custom-datetime .bootstrap-datetimepicker-widget table td.day {
     box-sizing: border-box;
     height: 41px;
@@ -2079,5 +2101,4 @@ span.flatpickr-weekday {
     -webkit-animation: scale-out-center 0.3s ease both;
     transform-origin: top center;
 }
-
 /* end */
