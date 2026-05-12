@@ -434,15 +434,16 @@
                             <div class="col-sm-6 mb-3 mb-sm-0">
                                 <div class="custom-datetime">
                                     <label class="form-label">Select Date</label>
-                                    <input type="text" class="form-control border datepicker-icon custom_date_pickr" id="myDatePicker"
-                                        name="myDatePicker" placeholder="Select Date" inputmode="none">
+                                    <input type="text" class="form-control border datepicker-icon custom_date_pickr"
+                                        id="myDatePicker" name="myDatePicker" placeholder="Select Date"
+                                        inputmode="none">
                                 </div>
                             </div>
                             <div class="col-sm-6 mb-sm-0">
                                 <div class="custom-datetime">
                                     <label class="form-label">Select Time</label>
-                                    <input type="text" class="form-control border time-icon custom_time_pickr" id="myTimePicker"
-                                        name="myTimePicker" placeholder="Select Time">
+                                    <input type="text" class="form-control border time-icon custom_time_pickr"
+                                        id="myTimePicker" name="myTimePicker" placeholder="Select Time">
                                 </div>
                             </div>
                         </div>
@@ -455,7 +456,8 @@
                                 <div class="custom-datetime">
                                     <label class="form-label">Select Date Range</label>
                                     <div class="input-daterange">
-                                        <input type="text" class="form-control border datepicker-icon custom_date_range_pickr"
+                                        <input type="text"
+                                            class="form-control border datepicker-icon custom_date_range_pickr"
                                             id="myDateRange" name="myDateRange" placeholder="Select Date Range"
                                             inputmode="none">
                                     </div>
@@ -485,8 +487,26 @@
                         </div>
                         <div id="filePreview"></div>
                     </div>
-
                     <!-- end -->
+
+                    <!-- Upload & Edit Profile Image > custom -->
+                    <div class="field-group image-upload-field">
+                        <label class="form-label">Edit Profile</label>
+
+                        <div class="profile-img-wrap">
+                            <div class="profile-img-preview" id="profilePreview">
+                                <!-- style="background-image: url('./assets/images/profile-avtar-placeholder.png');"> -->
+                            </div>
+
+                            <label for="profileInput" class="edit-btn-overlay">
+                                <img src="./assets/images/edit-icon.svg" alt="edit icon">
+                            </label>
+
+                            <input type="file" id="profileInput" class="profile-input" accept="image/*">
+                        </div>
+                    </div>
+                    <!-- end -->
+
 
                     <button type="submit" id="submitBtn" class="btn btn-submit">
                         <span class="btn-submittext">Submit</span>

@@ -2101,4 +2101,57 @@ span.flatpickr-weekday {
     -webkit-animation: scale-out-center 0.3s ease both;
     transform-origin: top center;
 }
+
+/* end */
+
+
+/************* Upload & Edit Profile Image *************/
+.profile-img-wrap {
+    position: relative;
+    margin: auto;
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+}
+
+.profile-img-preview {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    -ms-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+}
+
+.profile-input {
+    display: none;
+}
+
+.edit-btn-overlay {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background:     #c47a4a;
+    color: #fff;
+    border: 3px solid #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 18px;
+}
+
 /* end */

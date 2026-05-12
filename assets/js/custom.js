@@ -1061,3 +1061,53 @@ $(function () {
         }, 200);
     });
 });
+
+
+
+//************* Profile Image Upload JQuery **************/
+
+const $profileInput = $("#profileInput");
+const $profilePreview = $("#profilePreview");
+const defaultImage =
+    "./assets/images/profile-avtar-placeholder.png";
+
+// Default Placeholder
+$profilePreview.css(
+    "background-image",
+    `url(${defaultImage})`
+);
+
+// Open Upload
+$profilePreview.on("click", function () {
+    $profileInput.click();
+});
+
+// Image Preview
+$profileInput.on("change", function () {
+    const file = this.files[0];
+
+    // If image selected
+    if (file) {
+
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            $profilePreview.css(
+                "background-image",
+                `url(${e.target.result})`
+            );
+
+        };
+
+        reader.readAsDataURL(file);
+    }
+
+    // If user cancels selection
+    else {
+        $profilePreview.css(
+            "background-image",
+            `url(${defaultImage})`
+        );
+
+    }
+
+});
