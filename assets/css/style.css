@@ -29,8 +29,8 @@ a,
 *:focus,
 *:active :focus {
     text-decoration: none;
-    outline: none !important;
-    outline-offset: 0 !important;
+    /* outline: none !important;
+    outline-offset: 0 !important; */
 }
 
 ::-webkit-scrollbar {
@@ -273,6 +273,7 @@ input:-moz-autofill-preview {
     gap: 4px 6px;
     flex-wrap: wrap;
     margin-bottom: 0;
+    /* margin-right: 12px; */
 }
 
 .select2-container--default .select2-selection--multiple .select2-selection__choice {
@@ -324,6 +325,10 @@ input:-moz-autofill-preview {
     margin-top: 0;
     font-size: 1.3em;
     height: auto;
+    right: 30px;
+    padding: 1px;
+    line-height: 1;
+    text-align: center;
 }
 
 .select2-selection.select2-selection--multiple.select2-selection--clearable>.select2-search.select2-search--inline {
@@ -336,7 +341,7 @@ input:-moz-autofill-preview {
     right: 16px;
     top: 16px;
     width: 16px;
-    height: 16px;
+    height: 20px;
     background-image: url(../images/btnnav-icon.svg);
     background-repeat: no-repeat;
     background-size: 100%;
@@ -2262,3 +2267,74 @@ span.flatpickr-weekday {
 }
 
 /* end */
+
+
+/************* Single Dropdown > custom *************/
+
+.custom-select-wrap {
+    position: relative;
+    width: 360px;
+}
+
+.custom-select-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.selected-text {
+    color: #808080;
+    font-weight: 300;
+    font-size: 16px;
+    overflow: hidden;
+    white-space: nowrap;
+    margin-right: 10px;
+}
+
+.selected-text.selected {
+    color: #242424;
+}
+
+.custom-select-wrap .dropdown-arrow {
+    transition: transform .3s ease;
+    flex-shrink: 0;
+}
+
+.custom-select-wrap.active .dropdown-arrow {
+    transform: rotate(180deg);
+}
+
+.custom-dropdown {
+    width: 100%;
+    background: #fff;
+    border-radius: 14px;
+    border: 1px solid #eee;
+    overflow: hidden;
+    display: none;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .08);
+}
+
+.custom-dropdown .dropdown-item {
+    padding: 14px 16px;
+    cursor: pointer;
+    border-bottom: 1px dashed #e6e6e6;
+    font-size: 14px;
+    white-space: normal;
+    transition: all .3s ease;
+}
+
+.custom-dropdown .dropdown-item:last-child {
+    border-bottom: none;
+}
+
+.custom-dropdown .dropdown-item:hover,
+.custom-dropdown .dropdown-item:active {
+    background: #f8f8f8;
+}
+
+.dropdown-item.selected {
+    background: #f4ede8;
+    color: #c47a4a;
+    font-weight: 500;
+}

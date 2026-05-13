@@ -32,6 +32,21 @@
 
 @media (max-width: 992px) {
 
+    /* Custom Single Dropdown */
+    .selected-text {
+        font-size: 14px;
+    }
+
+    .custom-select-wrap .dropdown-arrow {
+        width: 20px;
+        height: 20px;
+    }
+
+    .custom-dropdown .dropdown-item {
+        padding: 12px 14px;
+        font-size: 13px;
+    }
+
     /* Bootstrap DateTimepicker */
     .custom-datetime .timepicker .btn {
         border-radius: 8px;
@@ -88,9 +103,9 @@
     /* end */
     .select2-selection--multiple::after {
         right: 14px;
-        top: 14px;
-        width: 14px;
-        height: 14px;
+        top: 16px;
+        width: 12px;
+        height: 12px;
     }
 
     /* canvas chart */
@@ -289,6 +304,15 @@
 
 
 @media (max-width: 575px) {
+
+    /* Custom single dropdown */
+    .custom-select-wrap {
+        width: 100%;
+    }
+
+    .custom-dropdown {
+        border-radius: 10px;
+    }
 
     /* Profile Upload or remove image */
     .profile-upload-wrap .profile-img-preview {
@@ -547,7 +571,6 @@
     }
 
     .form-control.border {
-        padding: 10px 14px;
         border-radius: 10px;
     }
 
@@ -566,5 +589,13 @@
 
     .upload-box .file-upload-icon {
         width: 40px;
+    }
+
+    .select2-container .select2-selection--multiple .select2-selection__clear {
+        right: 26px;
+    }
+
+    .select2-container .select2-selection--multiple .select2-selection__clear {
+        display: none;
     }
 }

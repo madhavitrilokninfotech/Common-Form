@@ -1177,3 +1177,60 @@ $removeBtn1.on("click", function () {
     $removeBtn1.prop("disabled", true).addClass("disabled");
 
 });
+
+
+
+//************* Single Select Custom Dropdown **************/
+$(document).ready(function () {
+
+    // Toggle Dropdown
+    $(document).on("click", ".custom-select-box", function () {
+        const $parent = $(this).closest(".custom-select-wrap");
+
+        $(".custom-select-wrap")
+            .not($parent)
+            .removeClass("active")
+            .find(".custom-dropdown")
+            .slideUp(200);
+
+        $parent.toggleClass("active");
+        $parent.find(".custom-dropdown").slideToggle(200);
+
+    });
+
+    // Select Item
+    $(document).on("click", ".dropdown-item", function () {
+
+        const selectedText = $(this).text();
+
+        const $parent = $(this).closest(".custom-select-wrap");
+
+        const $selectedText = $parent.find(".selected-text");
+
+        // Remove old selected class
+        $parent.find(".dropdown-item").removeClass("selected");
+
+        // Add active class to selected item
+        $(this).addClass("selected");
+
+        // Set selected text
+        $selectedText
+            .text(selectedText)
+            .addClass("selected");
+
+        // Close dropdown
+        $parent.removeClass("active");
+        $parent.find(".custom-dropdown").slideUp(200);
+    });
+
+    // Outside Click
+    $(document).on("click", function (e) {
+        if (!$(e.target).closest(".custom-select-wrap").length) {
+
+            $(".custom-select-wrap")
+                .removeClass("active")
+                .find(".custom-dropdown")
+                .slideUp(200);
+        }
+    });
+});
