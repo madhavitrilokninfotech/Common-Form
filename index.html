@@ -492,18 +492,51 @@
                     <!-- Upload & Edit Profile Image > custom -->
                     <div class="field-group image-upload-field">
                         <label class="form-label">Edit Profile</label>
+                        <div class="row align-items-center">
+                            <div class="col-md-6">
+                                <div class="profile-img-wrap">
+                                    <div class="profile-img-preview" id="profilePreview">
+                                        <!-- style="background-image: url('./assets/images/profile-avtar-placeholder.png');"> -->
+                                    </div>
 
-                        <div class="profile-img-wrap">
-                            <div class="profile-img-preview" id="profilePreview">
-                                <!-- style="background-image: url('./assets/images/profile-avtar-placeholder.png');"> -->
+                                    <label for="profileInput" class="edit-btn-overlay">
+                                        <img src="./assets/images/edit-icon.svg" alt="edit icon">
+                                    </label>
+
+                                    <input type="file" id="profileInput" class="profile-input" accept="image/*">
+                                </div>
                             </div>
+                            <div class="col-md-6">
+                                <div class="profile-upload-wrap">
+                                    <div class="profile-img-preview" id="profilePreview1"></div>
 
-                            <label for="profileInput" class="edit-btn-overlay">
-                                <img src="./assets/images/edit-icon.svg" alt="edit icon">
-                            </label>
+                                    <div class="profile-info">
+                                        <span class="profile-name d-inline-block">Your Name</span>
+                                        <div class="edit-remove-btn-wrap">
+                                            <!-- Edit Icon -->
+                                            <button type="button" class="profile-upload-btn" id="removeProfile1">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24"
+                                                    height="24" class="upload-icon">
+                                                    <path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z" />
+                                                </svg>
+                                                Upload Image
+                                            </button>
 
-                            <input type="file" id="profileInput" class="profile-input" accept="image/*">
+                                            <!-- Remove Icon -->
+                                            <button type="button" class="profile-remove-btn" id="removeProfile1">
+                                                Remove
+                                                <!-- <img src="./assets/images/remove-icon.svg" alt="remove icon"> -->
+                                            </button>
+                                        </div>
+                                        <div class="image-guidelines">
+                                            Recommended: Square image, at least 400x400px. Max size 5MB.
+                                        </div>
+                                    </div>
+                                    <input type="file" id="profileInput1" class="profile-input" accept="image/*">
+                                </div>
+                            </div>
                         </div>
+
                     </div>
                     <!-- end -->
 

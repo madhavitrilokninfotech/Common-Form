@@ -1111,3 +1111,69 @@ $profileInput.on("change", function () {
     }
 
 });
+
+
+//************* Profile Upload or Remove Image JQuery **************/
+const $profileInput1 = $("#profileInput1");
+const $profilePreview1 = $("#profilePreview1");
+const $uploadBtn1 = $(".profile-upload-btn");
+const $removeBtn1 = $(".profile-remove-btn");
+
+const defaultImage1 = "./assets/images/profile-avtar-placeholder.png";
+
+// ================= Default Image =================
+$profilePreview1.css(
+    "background-image",
+    `url(${defaultImage1})`
+);
+
+// Remove button disabled by default
+$removeBtn1.prop("disabled", true).addClass("disabled");
+
+// ================= Upload Click =================
+$uploadBtn1.on("click", function () {
+    $profileInput1.click();
+});
+
+// ================= Preview Image =================
+$profileInput1.on("change", function () {
+
+    const file = this.files[0];
+
+    // If image selected
+    if (file) {
+
+        const reader = new FileReader();
+
+        reader.onload = function (e) {
+
+            $profilePreview1.css(
+                "background-image",
+                `url(${e.target.result})`
+            );
+
+            // Enable remove button
+            $removeBtn1.prop("disabled", false).removeClass("disabled");
+        };
+
+        reader.readAsDataURL(file);
+    }
+
+});
+
+// ================= Remove Image =================
+$removeBtn1.on("click", function () {
+
+    // Reset image
+    $profilePreview1.css(
+        "background-image",
+        `url(${defaultImage1})`
+    );
+
+    // Reset input
+    $profileInput1.val("");
+
+    // Disable remove button again
+    $removeBtn1.prop("disabled", true).addClass("disabled");
+
+});

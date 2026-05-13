@@ -2144,7 +2144,7 @@ span.flatpickr-weekday {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background:     #c47a4a;
+    background: #c47a4a;
     color: #fff;
     border: 3px solid #fff;
     display: flex;
@@ -2152,6 +2152,113 @@ span.flatpickr-weekday {
     justify-content: center;
     cursor: pointer;
     font-size: 18px;
+}
+
+/* end */
+
+
+/************* Upload, Edit & Remove Profile Image *************/
+.profile-upload-wrap {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.profile-upload-wrap .profile-img-preview {
+    display: block;
+    flex-shrink: 0;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -o-border-radius: 50%;
+    cursor: default;
+}
+
+.edit-remove-btn-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.profile-upload-btn {
+    border: 1px solid transparent;
+    background-color: #c47a4a;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    gap: 6px;
+    padding: 8px 12px;
+    border-radius: 10px;
+    font-size: 14px;
+    will-change: transform;
+    transition: all .4s ease;
+    transform-origin: center center;
+    -webkit-transition: all .4s ease;
+    -moz-transition: all .4s ease;
+    -ms-transition: all .4s ease;
+    -o-transition: all .4s ease;
+}
+
+.profile-upload-btn:active {
+    transform: scale(0.92);
+    -webkit-transform: scale(0.92);
+    -moz-transform: scale(0.92);
+    -ms-transform: scale(0.92);
+    -o-transform: scale(0.92);
+}
+
+.upload-icon {
+    width: 16px;
+    height: 16px;
+    fill: white;
+}
+
+.profile-remove-btn {
+    border: 1px solid #c47a4a;
+    background-color: #fff;
+    color: #c47a4a;
+    text-align: center;
+    padding: 8px 16px;
+    border-radius: 10px;
+    font-size: 14px;
+    will-change: transform;
+    transition: all .4s ease;
+    transform-origin: center center;
+    -webkit-transition: all .4s ease;
+    -moz-transition: all .4s ease;
+    -ms-transition: all .4s ease;
+    -o-transition: all .4s ease;
+}
+
+.profile-remove-btn:active {
+    transform: scale(0.92);
+    -webkit-transform: scale(0.92);
+    -moz-transform: scale(0.92);
+    -ms-transform: scale(0.92);
+    -o-transform: scale(0.92);
+}
+
+.profile-remove-btn.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+    cursor: not-allowed;
+}
+
+.profile-name {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.image-guidelines {
+    font-size: 12px;
+    color: #7c7c7c;
+    margin-top: 6px;
+    letter-spacing: 0.2px;
 }
 
 /* end */

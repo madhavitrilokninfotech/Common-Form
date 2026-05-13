@@ -266,7 +266,46 @@
     }
 }
 
+@media (max-width: 768px) {
+    .profile-upload-wrap {
+        gap: 15px;
+        padding: 30px 0;
+    }
+
+    .profile-upload-btn,
+    .profile-remove-btn {
+        gap: 3px;
+        padding: 6px 10px;
+        border-radius: 8px;
+        font-size: 12px;
+        letter-spacing: 0.2px;
+    }
+
+    .upload-icon {
+        width: 14px;
+        height: 14px;
+    }
+}
+
+
 @media (max-width: 575px) {
+
+    /* Profile Upload or remove image */
+    .profile-upload-wrap .profile-img-preview {
+        width: 60px;
+        height: 60px;
+    }
+
+    .profile-upload-wrap {
+        gap: 12px;
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .edit-remove-btn-wrap {
+        gap: 8px;
+        justify-content: center;
+    }
 
     /* Profile Upload image */
     .profile-img-wrap {
