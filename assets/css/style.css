@@ -2273,7 +2273,6 @@ span.flatpickr-weekday {
 
 .custom-select-wrap {
     position: relative;
-    width: 360px;
 }
 
 .custom-select-box {
@@ -2337,4 +2336,26 @@ span.flatpickr-weekday {
     background: #f4ede8;
     color: #c47a4a;
     font-weight: 500;
+}
+
+/************* Single Floating Dropdown > custom *************/
+.floating-dropdown .custom-dropdown {
+    display: unset;
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    right: 0;
+    overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+    z-index: 1000;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+.floating-dropdown .custom-dropdown.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
 }

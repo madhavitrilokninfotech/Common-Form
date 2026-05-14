@@ -360,42 +360,82 @@
                     </div>
                     <!-- end -->
 
-                    <!-- Single Select Custom Dropdown -->
-                    <div class="field-group">
-                        <div class="custom-select-wrap">
-                            <label class="form-label">Single Select Option</label>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <!-- Single Select Custom Dropdown -->
+                            <div class="field-group">
+                                <div class="custom-select-wrap" id="SelectDropdown">
+                                    <label class="form-label">Single Select Option</label>
 
-                            <!-- Select Box -->
-                            <div class="custom-select-box form-control border">
-                                <span class="selected-text">
-                                   Select Option...
-                                </span>
+                                    <!-- Select Box -->
+                                    <div class="custom-select-box form-control border">
+                                        <span class="selected-text">
+                                            Select Option...
+                                        </span>
 
-                                <svg class="dropdown-arrow" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                    viewBox="0 0 24 24">
+                                        <svg class="dropdown-arrow" xmlns="http://www.w3.org/2000/svg" width="24"
+                                            height="24" viewBox="0 0 24 24">
 
-                                    <path d="M7 10l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round" />
-                                </svg>
+                                            <path d="M7 10l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2"
+                                                stroke-linecap="round" stroke-linejoin="round" />
+                                        </svg>
+                                    </div>
+
+                                    <!-- Dropdown -->
+                                    <div class="custom-dropdown">
+                                        <div class="dropdown-item">
+                                            Design Discussion
+                                        </div>
+                                        <div class="dropdown-item">
+                                            User Research
+                                        </div>
+                                        <div class="dropdown-item">
+                                            Prototype Development
+                                        </div>
+
+                                    </div>
+
+                                </div>
                             </div>
+                            <!-- end  -->
+                        </div>
+                        <div class="col-md-6">
+                            <!-- Single Select Custom floating Dropdown -->
+                            <div class="field-group">
+                                <div class="custom-select-wrap floating-dropdown" id="FloatingDropdownWrap">
+                                    <label class="form-label">Single Select Option</label>
 
-                            <!-- Dropdown -->
-                            <div class="custom-dropdown">
-                                <div class="dropdown-item">
-                                    Design Discussion
-                                </div>
-                                <div class="dropdown-item">
-                                    User Research
-                                </div>
-                                <div class="dropdown-item">
-                                    Prototype Development
-                                </div>
+                                    <!-- Select Box -->
+                                    <div class="custom-select-box form-control border" id="FloatingDropdown">
+                                        <span class="selected-text" id="selectedValue">
+                                            Select Option...
+                                        </span>
 
+                                        <svg class="dropdown-arrow" xmlns="http://www.w3.org/2000/svg" width="24"
+                                            height="24" viewBox="0 0 24 24">
+
+                                            <path d="M7 10l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2"
+                                                stroke-linecap="round" stroke-linejoin="round" />
+                                        </svg>
+                                    </div>
+
+                                    <!-- Dropdown -->
+                                    <div class="custom-dropdown" id="DropdownOptions">
+                                        <div class="dropdown-item optionitem" data-value="Design Discussion">
+                                            Design Discussion
+                                        </div>
+                                        <div class="dropdown-item optionitem" data-value="User Research">
+                                            User Research
+                                        </div>
+                                        <div class="dropdown-item optionitem" data-value="Prototype Development">
+                                            Prototype Development
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-
+                            <!-- end -->
                         </div>
                     </div>
-                    <!-- end  -->
 
                     <!-- Input Range Single Slider -->
                     <div class="field-group">

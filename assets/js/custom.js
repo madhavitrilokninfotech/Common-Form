@@ -1182,55 +1182,105 @@ $removeBtn1.on("click", function () {
 
 //************* Single Select Custom Dropdown **************/
 $(document).ready(function () {
+    // Check if ID exists
+    if ($("#SelectDropdown").length) {
+        // Toggle Dropdown
+        $(document).on("click", "#SelectDropdown .custom-select-box", function (e) {
+            e.stopPropagation();
 
-    // Toggle Dropdown
-    $(document).on("click", ".custom-select-box", function () {
-        const $parent = $(this).closest(".custom-select-wrap");
+            const $parent = $(this).closest("#SelectDropdown");
 
-        $(".custom-select-wrap")
-            .not($parent)
-            .removeClass("active")
-            .find(".custom-dropdown")
-            .slideUp(200);
-
-        $parent.toggleClass("active");
-        $parent.find(".custom-dropdown").slideToggle(200);
-
-    });
-
-    // Select Item
-    $(document).on("click", ".dropdown-item", function () {
-
-        const selectedText = $(this).text();
-
-        const $parent = $(this).closest(".custom-select-wrap");
-
-        const $selectedText = $parent.find(".selected-text");
-
-        // Remove old selected class
-        $parent.find(".dropdown-item").removeClass("selected");
-
-        // Add active class to selected item
-        $(this).addClass("selected");
-
-        // Set selected text
-        $selectedText
-            .text(selectedText)
-            .addClass("selected");
-
-        // Close dropdown
-        $parent.removeClass("active");
-        $parent.find(".custom-dropdown").slideUp(200);
-    });
-
-    // Outside Click
-    $(document).on("click", function (e) {
-        if (!$(e.target).closest(".custom-select-wrap").length) {
-
-            $(".custom-select-wrap")
+            $("#SelectDropdown")
+                .not($parent)
                 .removeClass("active")
                 .find(".custom-dropdown")
-                .slideUp(200);
+                .slideUp(300);
+
+            $parent.toggleClass("active");
+            $parent.find(".custom-dropdown").stop(true, true).slideToggle(300);
+
+        });
+
+        // Select Item
+        $(document).on("click", "#SelectDropdown .dropdown-item", function (e) {
+            e.stopPropagation();
+
+            const selectedText = $(this).text();
+            const $parent = $(this).closest("#SelectDropdown");
+            const $selectedText = $parent.find(".selected-text");
+
+            // Remove old selected class
+            $parent.find(".dropdown-item").removeClass("selected");
+
+            // Add active class to selected item
+            $(this).addClass("selected");
+
+            // Set selected text
+            $selectedText
+                .text(selectedText)
+                .addClass("selected");
+
+            // Close dropdown
+            $parent.removeClass("active");
+            $parent.find(".custom-dropdown").slideUp(300);
+        });
+
+        // Outside Click
+        $(document).on("click", function (e) {
+            if (!$(e.target).closest("#SelectDropdown").length) {
+
+                $("#SelectDropdown")
+                    .removeClass("active")
+                    .find(".custom-dropdown")
+                    .slideUp(300);
+            }
+        });
+    };
+});
+
+
+//************* Single Select Custom Floating Dropdown **************/
+const dropdownWrap = document.getElementById('FloatingDropdownWrap');
+
+if (dropdownWrap) {
+    const selectBox = dropdownWrap.querySelector('#FloatingDropdown');
+    const dropdownMenu = dropdownWrap.querySelector('#DropdownOptions');
+    const selectedValue = dropdownWrap.querySelector('#selectedValue');
+
+    // Toggle dropdown
+    selectBox.addEventListener('click', function () {
+        selectBox.classList.toggle('active');
+        dropdownMenu.classList.toggle('show');
+    });
+
+    // Select multiple options dynamically
+    dropdownMenu.addEventListener('click', function (event) {
+        const item = event.target.closest('.optionitem');
+
+        if (item) {
+            // Remove selected class from all items
+            const allItems = dropdownMenu.querySelectorAll('.optionitem');
+            allItems.forEach(function (opt) {
+                opt.classList.remove('selected');
+            });
+
+            // Add selected class to clicked item
+            item.classList.add('selected');
+
+            // Update selected text
+            selectedValue.textContent = item.getAttribute('data-value');
+
+            // Close dropdown
+            selectBox.classList.remove('active');
+            dropdownMenu.classList.remove('show');
         }
     });
-});
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function (event) {
+        if (!event.target.closest('#FloatingDropdownWrap')) {
+            selectBox.classList.remove('active');
+            dropdownMenu.classList.remove('show');
+        }
+    });
+}   
